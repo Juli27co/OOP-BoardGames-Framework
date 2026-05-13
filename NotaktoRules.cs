@@ -21,9 +21,5 @@ namespace OOP_BoardGames_Framework
         {
             // Stub
         }
-        public void CreateGrid()
-        {
-
-        }
     }
 }

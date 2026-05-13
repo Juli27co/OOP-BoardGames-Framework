@@ -1,6 +1,6 @@
 namespace OOP_BoardGames_Framework
 {
-    public abstract class LineBasedGameRules : BoardGameRules
+    public abstract class LineBasedGameRules : GameRules
     {
         public abstract string Player1Symbol { get; }
         public abstract string Player2Symbol { get; }

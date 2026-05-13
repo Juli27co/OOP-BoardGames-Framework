@@ -1,28 +1,46 @@
 namespace OOP_BoardGames_Framework
 {
-    public class GomokuRules : GameRules
+    public class GomokuRules : LineBasedGameRules
     {
-        public int Columns { get; } = 15;
-        public int Rows { get; } = 15;
-        public int WinLength { get; } = 5;
-        public string Player1Symbol { get; } = "X";
-        public string Player2Symbol { get; } = "O";
-        public bool ValidatePlayerMove(Board board, PlayerMove move)
+        public override int Columns { get; } = 15;
+        public override int Rows { get; } = 15;
+        public override int WinLength { get; } = 5;
+        public override string Player1Symbol { get; } = "X";
+        public override string Player2Symbol { get; } = "O";
+        public override bool ValidatePlayerMove(Board board, PlayerMove move)
         {
-            return true; //Needs implementation
+            if (!TryParseMove(move, out int column, out int row))
+            {
+                return false;
+            }
+            if (!IsInsideBoard(column, row))
+            {
+                return false;
+            }
+            return board.IsCellEmpty(column, row);
         }
-        public bool CheckForWinning(Board board) //Reused from my assignment 1 (refactored though)
+        public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
-            return false;
+            if (!TryParseMove(move, out int column, out int row))
+            {
+                throw new InvalidOperationException("Invalid Gomoku move.");
+            }
+            board.GamePiece(column, row, playerSymbol);
         }
-        public bool CheckForDraw(Board board)
+        private bool TryParseMove(PlayerMove move, out int column, out int row)
         {
-            //return board.IsBoardFull(); //Needs implementation in board
-            return false;
-        }
-        public void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
-        {
-            //board.PlaceSymbol(move.Column, move.Row, playerSymbol);
+            column = 0;
+            row = 0;
+            if (move == null || string.IsNullOrWhiteSpace(move.Move))
+            {
+                return false;
+            }
+            string[] parts = move.Move.Split(',');
+            if (parts.Length != 2)
+            {
+                return false;
+            }
+            return int.TryParse(parts[0].Trim(), out column) && int.TryParse(parts[1].Trim(), out row);
         }
     }
 }
