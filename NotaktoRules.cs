@@ -1,25 +1,29 @@
-public class NotaktoRules : GameRules
+namespace OOP_BoardGames_Framework
 {
-    public bool ValidatePlayerMove(Board board, Move move)
+
+    public class NotaktoRules : GameRules
     {
+        public bool ValidatePlayerMove(Board board, PlayerMove move)
+        {
+            {
+                return true; //Placeholder Test
+            }
+        }
+        public bool CheckForWinnning(Board board)
         {
             return true; //Placeholder Test
         }
-    }
-    public bool CheckForWinnning(Board board)
-    {
-        return true; //Placeholder Test
-    }
-    public bool CheckForDraw(Board board)
-    {
-        return true; //Placeholder Test
-    }
-    public void ExecuteMove()
-    {
+        public bool CheckForDraw(Board board)
+        {
+            return true; //Placeholder Test
+        }
+        public void ExecuteMove()
+        {
 
-    }
-    public void CreateGrid()
-    {
+        }
+        public void CreateGrid()
+        {
 
+        }
     }
 }

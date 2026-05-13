@@ -1,27 +1,30 @@
-public static class GameRulesFactory
+namespace OOP_BoardGames_Framework
 {
-    public static GameRules CreateRules(string gameType) //Worried about this limiting extensibility. Thoughts on a dictionary here instead?
+    public static class GameRulesFactory
     {
-        if (gameType == TicTacToe)
+        public static GameRules CreateRules(string gameType) //Worried about this limiting extensibility. Thoughts on a dictionary here instead?
         {
-            return new TicTacToeRules();
+            if (gameType == "TicTacToe")
+            {
+                return new TicTacToeRules();
+            }
+            if (gameType == "ConnectFour")
+            {
+                return new ConnectFourRules();
+            }
+            if (gameType == "NumericalTicTacToe")
+            {
+                return new NumericalTicTacToeRules();
+            }
+            if (gameType == "Notakto")
+            {
+                return new NotaktoRules();
+            }
+            if (gameType == "Gomoku")
+            {
+                return new GomokuRules();
+            }
+            throw new Exception("Unknown game type");
         }
-        if (gameType == ConnectFour)
-        {
-            return new ConnectFourRules();
-        }
-        if (gameType == NumericalTicTacToe)
-        {
-            return new NumericalTicTacToeRules();
-        }
-        if (gameType == Notakto)
-        {
-            return new NotaktoRules();
-        }
-        if (gameType == Gomoku)
-        {
-            return new GomokuRules();
-        }
-        throw new Exception("Unknown game type");
     }
 }
