@@ -1,2 +1,18 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using OOP_BoardGames_Framework;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Create two players, leaveing it as Human for now so we can keep working on it
+        Player player1 = new Human(1);
+        Player player2 = new Human(2);
+
+        // Also defaulted to HumanVsHuman and ConnectFour for now
+        GameMode mode = GameMode.HumanVsHuman;
+        GameType type = GameType.ConnectFour;
+
+        GameManager gameManager = new GameManager(mode, type, player1, player2);
+        gameManager.Run();
+    }
+}

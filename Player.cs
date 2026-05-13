@@ -11,6 +11,10 @@ namespace OOP_BoardGames_Framework
             PlayerId = playerId;
         }
 
+        public virtual string RequestAction(Board board, GameRules game, int turn)
+        {
+            throw new NotImplementedException("RequestAction must be implemented in derived classes.");
+        }
     }
 }
 

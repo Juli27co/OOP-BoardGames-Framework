@@ -1,88 +1,101 @@
-public class ConnectFourRules : GameRules
+namespace OOP_BoardGames_Framework
 {
-    public int Columns { get; } = 7;
-    public int Rows { get; } = 6;
-    public int WinLength { get; } = 4;
-    public string Player1Symbol { get; } = "X";
-    public ConsoleColor Player1Colour { get; } = ConsoleColor.Red;
-    public string Player2Symbol { get; } = "O";
-    public ConsoleColor Player2Colour { get; } = ConsoleColor.Yellow;
-    public bool ValidatePlayerMove(Board board, Move move)
+    public class ConnectFourRules : GameRules
     {
-        if (move.Column < 0 || move.Column >= Columns)
+        public int Columns { get; } = 7;
+        public int Rows { get; } = 6;
+        public int WinLength { get; } = 4;
+        public string Player1Symbol { get; } = "X";
+        public ConsoleColor Player1Colour { get; } = ConsoleColor.Red;
+        public string Player2Symbol { get; } = "O";
+        public ConsoleColor Player2Colour { get; } = ConsoleColor.Yellow;
+        public bool ValidatePlayerMove(Board board, PlayerMove move)
         {
+            // Commenting to allow the build to work without the board methods implemented.
+
+            //if (move.Column < 0 || move.Column >= Columns)
+            //{
+            //    return false;
+            //}
+            //return board.IsCellEmpty(move.Column, 0);
+            return true;
+        }
+        public bool CheckForWinning(Board boardl) //Reused from my assignment 1 (refactored though)
+        {
+            // Commenting to allow the build to work without the board methods implemented.
+
+            //for (int column = 0; column < Columns; column++)
+            //{
+            //    for (int row = 0; row < Rows; row++)
+            //    {
+            //        if (board.GetCell(column, row) != playerSymbol)//Need a method from elswhere
+            //        {
+            //            continue;
+            //        }
+
+            //        if (CheckDirection(board, column, row, 1, 0, playerSymbol)) // horizontal
+            //        {
+            //            return true;
+            //        }
+
+            //        if (CheckDirection(board, column, row, 0, 1, playerSymbol)) // vertical
+            //        {
+            //            return true;
+            //        }
+
+            //        if (CheckDirection(board, column, row, 1, 1, playerSymbol)) // diagonal down-right
+            //        {
+            //            return true;
+            //        }
+
+            //        if (CheckDirection(board, column, row, 1, -1, playerSymbol)) // diagonal up-right
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //}
             return false;
         }
-        return board.IsCellEmpty(move.Column, 0);
-    }
-    public bool CheckForWinning(Board board, string playerSymbol) //Reused from my assignment 1 (refactored though)
-    {
-        for (int column = 0; column < Columns; column++)
+        private bool CheckDirection(Board board, int initialColumn, int initialRow, int columnDirectionStep, int rowDirectionStep, string playerSymbol)
         {
-            for (int row = 0; row < Rows; row++)
-            {
-                if (board.GetCell(column, row) != playerSymbol)//Need a method from elswhere
-                {
-                    continue;
-                }
+            //for (int count = 0; count < WinLength; count++)
+            //{
+            //    int column = initialColumn + (count * columnDirectionStep);
+            //    int row = initialRow + (count * rowDirectionStep);
 
-                if (CheckDirection(board, column, row, 1, 0, playerSymbol)) // horizontal
-                {
-                    return true;
-                }
+            //    if (column < 0 || column >= Columns || row < 0 || row >= Rows)
+            //    {
+            //        return false;
+            //    }
 
-                if (CheckDirection(board, column, row, 0, 1, playerSymbol)) // vertical
-                {
-                    return true;
-                }
+            //    if (board.GetCell(column, row) != playerSymbol) //Need method from elsewhere
+            //    {
+            //        return false;
+            //    }
+            //}
 
-                if (CheckDirection(board, column, row, 1, 1, playerSymbol)) // diagonal down-right
-                {
-                    return true;
-                }
-
-                if (CheckDirection(board, column, row, 1, -1, playerSymbol)) // diagonal up-right
-                {
-                    return true;
-                }
-            }
+            return true;
         }
-        return false;
-    }
-    private bool CheckDirection(Board board, int initialColumn, int initialRow, int columnDirectionStep, int rowDirectionStep, string playerSymbol)
-    {
-        for (int count = 0; count < WinLength; count++)
+        public bool CheckForDraw(Board board)
         {
-            int column = initialColumn + (count * columnDirectionStep);
-            int row = initialRow + (count * rowDirectionStep);
+            // Commenting to allow the build to work without the board methods implemented.
 
-            if (column < 0 || column >= Columns || row < 0 || row >= Rows)
-            {
-                return false;
-            }
-
-            if (board.GetCell(column, row) != playerSymbol) //Need method from elsewhere
-            {
-                return false;
-            }
+            //return board.IsBoardFull(); //Needs implementation in board
+            return true;
         }
-
-        return true;
-    }
-    public bool CheckForDraw(Board board)
-    {
-        return board.IsBoardFull(); //Needs implementation in board
-    }
-    public void ExecuteMove(Board board, Move move, string playerSymbol)
-    {
-        for (int row = Rows - 1; row >= 0; row--) // Apply gravity. Didn't use a method as no other game uses gravity
+        public void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
-            if (board.IsCellEmpty(move.Column, row))
-            {
-                board.PlaceSymbol(move.Column, row, playerSymbol);
-                return;
-            }
+            // Commenting to allow the build to work without the board methods implemented.
+
+            //for (int row = Rows - 1; row >= 0; row--) // Apply gravity. Didn't use a method as no other game uses gravity
+            //{
+            //    if (board.IsCellEmpty(move.Column, row))
+            //    {
+            //        board.PlaceSymbol(move.Column, row, playerSymbol);
+            //        return;
+            //    }
+            //}
+            //throw new InvalidOperationException("Column is full.");
         }
-        throw new InvalidOperationException("Column is full.");
     }
 }
