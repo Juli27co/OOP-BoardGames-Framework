@@ -1,21 +1,27 @@
 public interface GameRules
 {
-    public bool CheckForDraw(Board board)
-    {
-        return true; //Placeholder Test
-    }
-
-    public bool CheckForWinnning(Board board)
-    {
-        return true; //Placeholder Test
-    }
+    public abstract int Columns { get; }
+    public abstract int Rows { get; }
+    public abstract int WinLength { get; }
+    public abstract string Player1Symbol { get; }
+    public abstract string Player2Symbol { get; }
+    public abstract ConsoleColor Player1Colour { get; }
+    public abstract ConsoleColor Player2Colour { get; }
     public bool ValidatePlayerMove(Board board, Move move)
     {
         {
             return true; //Placeholder Test
         }
     }
-    protected void ExecuteMove()
+    public bool CheckForWinnning(Board board)
+    {
+        return true; //Placeholder Test
+    }
+    public bool CheckForDraw(Board board)
+    {
+        return true; //Placeholder Test
+    }
+    public abstract void ExecuteMove(Board board, Move move, string playerSymbol)
     {
 
     }
