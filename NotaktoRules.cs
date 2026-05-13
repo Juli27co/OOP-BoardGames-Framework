@@ -1,6 +1,5 @@
 namespace OOP_BoardGames_Framework
 {
-
     public class NotaktoRules : GameRules
     {
         public bool ValidatePlayerMove(Board board, PlayerMove move)
