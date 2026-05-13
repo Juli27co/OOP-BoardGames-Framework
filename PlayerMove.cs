@@ -2,10 +2,10 @@
 
 namespace OOP_BoardGames_Framework
 {
-    internal class PlayerMove
+    public class PlayerMove
     {
         public string Move { get; set; }
-        public Player Player{ get; set; }
+        public Player Player { get; set; }
 
         public int Turn { get; set; }
 

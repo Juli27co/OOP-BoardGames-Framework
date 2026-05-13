@@ -9,7 +9,7 @@ namespace OOP_BoardGames_Framework
                 return true; //Placeholder Test
             }
         }
-        public bool CheckForWinnning(Board board)
+        public bool CheckForWinning(Board board)
         {
             return true; //Placeholder Test
         }
@@ -17,9 +17,9 @@ namespace OOP_BoardGames_Framework
         {
             return true; //Placeholder Test
         }
-        public void ExecuteMove()
+        public void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
-
+            // Stub
         }
         public void CreateGrid()
         {

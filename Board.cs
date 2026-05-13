@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OOP_BoardGames_Framework
 {
-    internal class Board
+    public class Board
     {
         // Base board class, yet to be developed
     }
