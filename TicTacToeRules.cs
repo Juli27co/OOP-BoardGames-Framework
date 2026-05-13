@@ -1,11 +1,11 @@
 public class TicTacToeRules : GameRules
 {
-    public override int Columns { get; } = 3;
-    public override int Rows { get; } = 3;
-    public override int WinLength { get; } = 3;
-    public override string Player1Symbol { get; } = "X";
-    public override string Player2Symbol { get; } = "O";
-    public override bool ValidatePlayerMove(Board board, Move move)
+    public int Columns { get; } = 3;
+    public int Rows { get; } = 3;
+    public int WinLength { get; } = 3;
+    public string Player1Symbol { get; } = "X";
+    public string Player2Symbol { get; } = "O";
+    public bool ValidatePlayerMove(Board board, Move move)
     {
         if (move.Column < 0 || move.Column >= Columns)
         {
@@ -19,7 +19,7 @@ public class TicTacToeRules : GameRules
 
         return board.IsCellEmpty(move.Column, move.Row);
     }
-    public override bool CheckForWinning(Board board, string playerSymbol) //Reused from my assignment 1 (refactored though)
+    public bool CheckForWinning(Board board, string playerSymbol) //Reused from my assignment 1 (refactored though)
     {
         for (int column = 0; column < Columns; column++)
         {
@@ -73,11 +73,11 @@ public class TicTacToeRules : GameRules
 
         return true;
     }
-    public override bool CheckForDraw(Board board)
+    public bool CheckForDraw(Board board)
     {
         return board.IsBoardFull(); //Needs implementation in board
     }
-    public override void ExecuteMove(Board board, Move move, string playerSymbol)
+    public void ExecuteMove(Board board, Move move, string playerSymbol)
     {
         board.PlaceSymbol(move.Column, move.Row, playerSymbol);
     }

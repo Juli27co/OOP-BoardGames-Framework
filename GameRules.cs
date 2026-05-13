@@ -1,26 +1,12 @@
 public interface GameRules
 {
-    public abstract int Columns { get; }
-    public abstract int Rows { get; }
-    public abstract int WinLength { get; }
-    public abstract string Player1Symbol { get; }
-    public abstract string Player2Symbol { get; }
-    public bool ValidatePlayerMove(Board board, Move move)
-    {
-        return true; //Placeholder Test
-    }
-    public bool CheckForWinnning(Board board)
-    {
-        return true; //Placeholder Test
-    }
-    public bool CheckForDraw(Board board)
-    {
-        return true; //Placeholder Test
-    }
-    public abstract void ExecuteMove(Board board, Move move, string playerSymbol)
-    {
-    }
-    protected void CreateGrid()
-    {
-    }
+    int Columns { get; }
+    int Rows { get; }
+    int WinLength { get; }
+    string Player1Symbol { get; }
+    string Player2Symbol { get; }
+    public bool ValidatePlayerMove(Board board, Move move);
+    public bool CheckForWinning(Board board);
+    public bool CheckForDraw(Board board);
+    void ExecuteMove(Board board, Move move, string playerSymbol);
 }

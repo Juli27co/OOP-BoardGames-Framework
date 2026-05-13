@@ -1,13 +1,13 @@
 public class ConnectFourRules : GameRules
 {
-    public override int Columns { get; } = 7;
-    public override int Rows { get; } = 6;
-    public override int WinLength { get; } = 4;
-    public override string Player1Symbol { get; } = "X";
+    public int Columns { get; } = 7;
+    public int Rows { get; } = 6;
+    public int WinLength { get; } = 4;
+    public string Player1Symbol { get; } = "X";
     public ConsoleColor Player1Colour { get; } = ConsoleColor.Red;
-    public override string Player2Symbol { get; } = "O";
+    public string Player2Symbol { get; } = "O";
     public ConsoleColor Player2Colour { get; } = ConsoleColor.Yellow;
-    public override bool ValidatePlayerMove(Board board, Move move)
+    public bool ValidatePlayerMove(Board board, Move move)
     {
         if (move.Column < 0 || move.Column >= Columns)
         {
@@ -15,7 +15,7 @@ public class ConnectFourRules : GameRules
         }
         return board.IsCellEmpty(move.Column, 0);
     }
-    public override bool CheckForWinning(Board board, string playerSymbol) //Reused from my assignment 1 (refactored though)
+    public bool CheckForWinning(Board board, string playerSymbol) //Reused from my assignment 1 (refactored though)
     {
         for (int column = 0; column < Columns; column++)
         {
@@ -69,11 +69,11 @@ public class ConnectFourRules : GameRules
 
         return true;
     }
-    public override bool CheckForDraw(Board board)
+    public bool CheckForDraw(Board board)
     {
         return board.IsBoardFull(); //Needs implementation in board
     }
-    public override void ExecuteMove(Board board, Move move, string playerSymbol)
+    public void ExecuteMove(Board board, Move move, string playerSymbol)
     {
         for (int row = Rows - 1; row >= 0; row--) // Apply gravity. Didn't use a method as no other game uses gravity
         {
