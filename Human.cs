@@ -1,0 +1,39 @@
+﻿
+
+namespace OOP_BoardGames_Framework
+{
+    public class Human : Player
+    {
+        public Human(int PlayerId) : base(PlayerId) { }
+
+        // This method prompts the human player to enter their next action, reads the input, and validates it.
+        public string RequestAction(Board board, GameRules game, int turn)
+        {
+            Console.WriteLine($"Player #{this.PlayerId}: Type your next action.");
+            string action = Logger.ReadLine() ?? "";
+
+            PlayerMove move = new PlayerMove(action, this, turn);
+
+            try
+            {
+                bool valid = game.ValidatePlayerMove(board, move);
+                if (valid)
+                {
+                    return action;
+                }
+                else
+                {
+                    throw new FormatException("Invalid move. Please try again.");
+                }
+
+
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine(e.Message);
+                return this.RequestAction(board, game, turn);
+            }
+
+        }
+    }
+}
