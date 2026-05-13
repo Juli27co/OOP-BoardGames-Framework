@@ -22,5 +22,6 @@ public static class GameRulesFactory
         {
             return new GomokuRules();
         }
+        throw new Exception("Unknown game type");
     }
 }
