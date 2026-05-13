@@ -4,9 +4,9 @@ public class ConnectFourRules : GameRules
     public override int Rows { get; } = 6;
     public override int WinLength { get; } = 4;
     public override string Player1Symbol { get; } = "X";
-    public override ConsoleColor Player1Colour { get; } = ConsoleColor.Red;
+    public ConsoleColor Player1Colour { get; } = ConsoleColor.Red;
     public override string Player2Symbol { get; } = "O";
-    public override ConsoleColor Player2Colour { get; } = ConsoleColor.Yellow;
+    public ConsoleColor Player2Colour { get; } = ConsoleColor.Yellow;
     public override bool ValidatePlayerMove(Board board, Move move)
     {
         if (move.Column < 0 || move.Column >= Columns)

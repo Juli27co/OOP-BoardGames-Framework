@@ -5,13 +5,9 @@ public interface GameRules
     public abstract int WinLength { get; }
     public abstract string Player1Symbol { get; }
     public abstract string Player2Symbol { get; }
-    public abstract ConsoleColor Player1Colour { get; }
-    public abstract ConsoleColor Player2Colour { get; }
     public bool ValidatePlayerMove(Board board, Move move)
     {
-        {
-            return true; //Placeholder Test
-        }
+        return true; //Placeholder Test
     }
     public bool CheckForWinnning(Board board)
     {
@@ -23,10 +19,8 @@ public interface GameRules
     }
     public abstract void ExecuteMove(Board board, Move move, string playerSymbol)
     {
-
     }
     protected void CreateGrid()
     {
-
     }
 }
