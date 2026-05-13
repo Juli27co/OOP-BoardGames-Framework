@@ -1,15 +1,20 @@
 namespace OOP_BoardGames_Framework
 {
-    public interface GameRules
+    public abstract class GameRules
     {
-        //int Columns { get; }
-        //int Rows { get; }
-        //int WinLength { get; }
-        //string Player1Symbol { get; }
-        //string Player2Symbol { get; }
-        public bool ValidatePlayerMove(Board board, PlayerMove move);
-        public bool CheckForWinning(Board board);
-        public bool CheckForDraw(Board board);
-        void ExecuteMove(Board board, PlayerMove move, string playerSymbol);
+        public abstract int Columns { get; }
+        public abstract int Rows { get; }
+        public abstract int WinLength { get; }
+        public abstract bool ValidatePlayerMove(Board board, PlayerMove move);
+        public abstract bool CheckForWinning(Board board);
+        public abstract void ExecuteMove(Board board, PlayerMove move, string playerSymbol);
+        protected bool IsInsideBoard(int column, int row)
+        {
+            return column >= 0 && column < Columns && row >= 0 & row < Rows;
+        }
+        public virtual bool CheckForDraw(Board board)
+        {
+            return board.IsBoardFull();
+        }
     }
 }

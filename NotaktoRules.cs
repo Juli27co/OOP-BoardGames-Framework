@@ -1,6 +1,5 @@
 namespace OOP_BoardGames_Framework
 {
-
     public class NotaktoRules : GameRules
     {
         public bool ValidatePlayerMove(Board board, PlayerMove move)
@@ -20,10 +19,6 @@ namespace OOP_BoardGames_Framework
         public void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
             // Stub
-        }
-        public void CreateGrid()
-        {
-
         }
     }
 }
