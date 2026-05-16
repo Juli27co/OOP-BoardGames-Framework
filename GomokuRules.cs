@@ -17,7 +17,8 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            return board.IsCellEmpty(column, row);
+            //return board.IsCellEmpty(column, row);
+            return true;
         }
         public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
@@ -25,7 +26,7 @@ namespace OOP_BoardGames_Framework
             {
                 throw new InvalidOperationException("Invalid Gomoku move.");
             }
-            board.GamePiece(column, row, playerSymbol);
+            //board.GamePiece(column, row, playerSymbol);
         }
         private bool TryParseMove(PlayerMove move, out int column, out int row)
         {
