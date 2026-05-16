@@ -5,6 +5,7 @@ namespace OOP_BoardGames_Framework
     public class Player
     {
         public int PlayerId { get; }
+        public string GamePiece { get; }
 
         public Player(int playerId)
         {
