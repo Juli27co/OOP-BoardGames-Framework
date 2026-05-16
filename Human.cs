@@ -7,7 +7,7 @@ namespace OOP_BoardGames_Framework
         public Human(int PlayerId) : base(PlayerId) { }
 
         // This method prompts the human player to enter their next action, reads the input, and validates it.
-        public override string RequestAction(Board board, GameRules game, int turn)
+        public override string RequestAction(Board board, GameRules rules, int turn)
         {
             Console.WriteLine($"Player #{this.PlayerId}: Type your next action.");
             string action = Logger.ReadLine() ?? "";
@@ -16,7 +16,7 @@ namespace OOP_BoardGames_Framework
 
             try
             {
-                bool valid = game.ValidatePlayerMove(board, move);
+                bool valid = rules.ValidatePlayerMove(board, move);
                 if (valid)
                 {
                     return action;
@@ -31,7 +31,7 @@ namespace OOP_BoardGames_Framework
             catch (FormatException e)
             {
                 Console.WriteLine(e.Message);
-                return this.RequestAction(board, game, turn);
+                return this.RequestAction(board, rules, turn);
             }
 
         }
