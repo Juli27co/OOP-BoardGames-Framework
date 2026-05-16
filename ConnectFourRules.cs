@@ -28,14 +28,14 @@ namespace OOP_BoardGames_Framework
             {
                 throw new InvalidOperationException("Invalid Connect Four move.");
             }
-            //for (int row = Rows - 1; row >= 0; row--) // Apply gravity.
-            //{
-            //    if (board.IsCellEmpty(column, row))
-            //    {
-            //        board.PlaceSymbol(column, row, playerSymbol);
-            //        return;
-            //    }
-            //}
+            for (int row = Rows - 1; row >= 0; row--) // Apply gravity.
+            {
+               if (board.IsCellEmpty(column, row))
+               {
+                   board.AddElement(column, row, playerSymbol);
+                   return;
+               }
+            }
             throw new InvalidOperationException("Column is full.");
         }
         private bool TryParseMove(PlayerMove move, out int column)
@@ -45,7 +45,13 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            return int.TryParse(move.Move.Trim(), out column);
+            if (!int.TryParse(move.Move.Trim(), out int inputColumn))
+            {
+                return false;
+            }
+
+            column = inputColumn - 1;
+            return true;
         }
     }
 }
