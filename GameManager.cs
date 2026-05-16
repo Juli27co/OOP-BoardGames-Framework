@@ -16,6 +16,9 @@ namespace OOP_BoardGames_Framework
     {
         ConnectFour,
         Gomoku,
+        TicTacToe,
+        NumericalTicTacToe,
+        Notakto,
         // Add more game types as needed
     }
 

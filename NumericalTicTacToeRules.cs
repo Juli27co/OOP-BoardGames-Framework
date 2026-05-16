@@ -17,7 +17,8 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            return IsInsideBoard(column, row) && board.IsCellEmpty(column, row) && number >= 1 && number <= Columns * Rows && !NumberAlreadyUsed(board, number) && IsCorrectNumberForPlayer(move, number);
+            //return IsInsideBoard(column, row) && board.IsCellEmpty(column, row) && number >= 1 && number <= Columns * Rows && !NumberAlreadyUsed(board, number) && IsCorrectNumberForPlayer(move, number);
+            return true;
         }
         public override bool CheckForWinning(Board board) //Checks for win
         {
@@ -39,7 +40,7 @@ namespace OOP_BoardGames_Framework
             {
                 throw new InvalidOperationException("Invalid Numerical Tic-Tac-Toe move.");
             }
-            board.GamePiece(column, row, number.ToString()); //String as playerMove currently stores items as a string
+            //board.GamePiece(column, row, number.ToString()); //String as playerMove currently stores items as a string
         }
         private bool TryParseMove(PlayerMove move, out int column, out int row, out int number) //Convert mentioned above into useable numbers
         {
@@ -58,12 +59,12 @@ namespace OOP_BoardGames_Framework
             {
                 int column = initialColumn + (count * columnDirectionStep);
                 int row = initialRow + (count * rowDirectionStep);
-                if (!IsInsideBoard(column, row) ||
-                    !int.TryParse(board.GetCell(column, row), out int number))
+                //if (!IsInsideBoard(column, row) ||
+                    //!int.TryParse(board.GetCell(column, row), out int number))
                 {
                     return false;
                 }
-                total += number;
+                //total += number;
             }
             return total == WinLength * ((WinLength * WinLength) + 1) / 2;
         }
@@ -73,7 +74,7 @@ namespace OOP_BoardGames_Framework
             {
                 for (int row = 0; row < Rows; row++)
                 {
-                    if (int.TryParse(board.GetCell(column, row), out int existingNumber) && existingNumber == number)
+                    //if (int.TryParse(board.GetCell(column, row), out int existingNumber) && existingNumber == number)
                     {
                         return true;
                     }

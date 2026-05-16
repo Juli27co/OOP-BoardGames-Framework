@@ -14,26 +14,26 @@ namespace OOP_BoardGames_Framework
             {
                 for (int row = 0; row < Rows; row++)
                 {
-                    if (board.GetCell(column, row) != playerSymbol)
-                    {
-                        continue;
-                    }
-                    if (CheckDirection(board, column, row, 1, 0, playerSymbol)) // horizontal
-                    {
-                        return true;
-                    }
-                    if (CheckDirection(board, column, row, 0, 1, playerSymbol)) // vertical
-                    {
-                        return true;
-                    }
-                    if (CheckDirection(board, column, row, 1, 1, playerSymbol)) // diagonal down-right
-                    {
-                        return true;
-                    }
-                    if (CheckDirection(board, column, row, 1, -1, playerSymbol)) // diagonal up-right
-                    {
-                        return true;
-                    }
+                    //if (board.GetCell(column, row) != playerSymbol)
+                    //{
+                    //    continue;
+                    //}
+                    //if (CheckDirection(board, column, row, 1, 0, playerSymbol)) // horizontal
+                    //{
+                    //    return true;
+                    //}
+                    //if (CheckDirection(board, column, row, 0, 1, playerSymbol)) // vertical
+                    //{
+                    //    return true;
+                    //}
+                    //if (CheckDirection(board, column, row, 1, 1, playerSymbol)) // diagonal down-right
+                    //{
+                    //    return true;
+                    //}
+                    //if (CheckDirection(board, column, row, 1, -1, playerSymbol)) // diagonal up-right
+                    //{
+                    //    return true;
+                    //}
                 }
             }
             return false;
@@ -48,7 +48,7 @@ namespace OOP_BoardGames_Framework
                 {
                     return false;
                 }
-                if (board.GetCell(column, row) != playerSymbol)
+                //if (board.GetCell(column, row) != playerSymbol)
                 {
                     return false;
                 }

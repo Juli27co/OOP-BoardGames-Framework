@@ -14,7 +14,8 @@ namespace OOP_BoardGames_Framework
         }
         public virtual bool CheckForDraw(Board board)
         {
-            return board.IsBoardFull();
+            //return board.IsBoardFull();
+            return false;
         }
     }
 }
