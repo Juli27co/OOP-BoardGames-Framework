@@ -6,7 +6,7 @@ namespace OOP_BoardGames_Framework
         public Board CurrentBoard { get; set; }
         public GameMode GameMode { get; set; }
         public Stack<PlayerMove> movesLog { get; set; } = new Stack<PlayerMove>();
-        public Stack<PlayerMove> RedoMoves { get; set; } = new Stack<PlayerMove>();
+        public Stack<PlayerMove> redoMoves { get; set; } = new Stack<PlayerMove>();
 
         public GameRecord() { }
         public GameRecord(Board board, GameType gameType, GameMode gameMode)
@@ -16,9 +16,24 @@ namespace OOP_BoardGames_Framework
             this.GameMode = gameMode;
         }
 
-        public void LogMove(Player player, PlayerMove move) { }
-        public void Undo() { }
-        public void Redo() { }
+
+        public void LogMove(PlayerMove move)
+        {
+            movesLog.Push(move);
+            redoMoves.Clear();
+        }
+        public PlayerMove Undo()
+        {
+            PlayerMove removedMove = movesLog.Pop();
+            redoMoves.Push(removedMove);
+            return movesLog.Peek();
+        }
+        public PlayerMove Redo()
+        {
+            PlayerMove redoMove = redoMoves.Pop();
+            movesLog.Push(redoMove);
+            return movesLog.Peek();
+        }
 
     }
 }
