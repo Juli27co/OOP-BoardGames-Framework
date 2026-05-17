@@ -44,7 +44,7 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            position--; // converts screen input 1-9 into board index 0-8
+            position--;
             row = position / Columns;
             column = position % Columns;
             return true;

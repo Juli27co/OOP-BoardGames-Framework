@@ -11,16 +11,15 @@ namespace OOP_BoardGames_Framework
         public ConsoleColor Player2Colour { get; } = ConsoleColor.Yellow;
         public override bool ValidatePlayerMove(Board board, PlayerMove move)
         {
-            //if (!TryParseMove(move, out int column))
-            //{
-            //    return false;
-            //}
-            //if (column < 0 || column >= Columns)
-            //{
-            //    return false;
-            //}
-            //return board.IsCellEmpty(column, 0);
-            return true;
+            if (!TryParseMove(move, out int column))
+            {
+                return false;
+            }
+            if (column < 0 || column >= Columns)
+            {
+                return false;
+            }
+            return board.IsCellEmpty(column, 0);
         }
         public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
@@ -30,11 +29,11 @@ namespace OOP_BoardGames_Framework
             }
             for (int row = Rows - 1; row >= 0; row--) // Apply gravity.
             {
-               if (board.IsCellEmpty(column, row))
-               {
-                   board.AddElement(column, row, playerSymbol);
-                   return;
-               }
+                if (board.IsCellEmpty(column, row))
+                {
+                    board.AddElement(column, row, playerSymbol);
+                    return;
+                }
             }
             throw new InvalidOperationException("Column is full.");
         }
@@ -45,12 +44,11 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            if (!int.TryParse(move.Move.Trim(), out int inputColumn))
+            if (!int.TryParse(move.Move.Trim(), out column))
             {
                 return false;
             }
-
-            column = inputColumn - 1;
+            column--;
             return true;
         }
     }
