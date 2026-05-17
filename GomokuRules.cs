@@ -36,12 +36,25 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            string[] parts = move.Move.Split(',');
-            if (parts.Length != 2)
+            string input = move.Move.Trim().ToUpper();
+            if (input.Length < 2 || input.Length > 3)
             {
                 return false;
             }
-            return int.TryParse(parts[0].Trim(), out column) && int.TryParse(parts[1].Trim(), out row);
+            char columnLetter = input[0];
+            if (columnLetter < 'A' || columnLetter > 'O')
+            {
+                return false;
+            }
+            column = columnLetter - 'A'; //convert to num
+            string rowText = input.Substring(1);
+            if (!int.TryParse(rowText, out row))
+            {
+                return false;
+            }
+            row--;
+            return true;
         }
+
     }
 }
