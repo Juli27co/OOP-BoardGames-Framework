@@ -18,7 +18,6 @@ namespace OOP_BoardGames_Framework
                 return false;
             }
             return board.IsCellEmpty(column, row);
-            //return false;
         }
         public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
@@ -37,12 +36,18 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            string[] parts = move.Move.Split(',');
-            if (parts.Length != 2)
+            if (!int.TryParse(move.Move.Trim(), out int position))
             {
                 return false;
             }
-            return int.TryParse(parts[0].Trim(), out column) && int.TryParse(parts[1].Trim(), out row);
+            if (position < 1 || position > 9)
+            {
+                return false;
+            }
+            position--; // converts screen input 1-9 into board index 0-8
+            row = position / Columns;
+            column = position % Columns;
+            return true;
         }
     }
 }
