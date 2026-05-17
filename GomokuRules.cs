@@ -26,7 +26,7 @@ namespace OOP_BoardGames_Framework
             {
                 throw new InvalidOperationException("Invalid Gomoku move.");
             }
-            //board.GamePiece(column, row, playerSymbol);
+            board.AddElement(column, row, playerSymbol);
         }
         private bool TryParseMove(PlayerMove move, out int column, out int row)
         {
