@@ -17,8 +17,8 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            //return board.IsCellEmpty(column, row);
-            return false;
+            return board.IsCellEmpty(column, row);
+            //return false;
         }
         public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
@@ -27,7 +27,7 @@ namespace OOP_BoardGames_Framework
                 throw new InvalidOperationException("Invalid Tic-Tac-Toe move.");
             }
 
-            //board.PlaceSymbol(column, row, playerSymbol);
+            board.AddElement(column, row, playerSymbol);
         }
         private bool TryParseMove(PlayerMove move, out int column, out int row)
         {

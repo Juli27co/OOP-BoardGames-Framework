@@ -49,6 +49,7 @@
             while (!gameEnded)
             {
                 //TODO: Display the current game state here (board, scores, etc.)
+                DisplayCurrentBoard();
 
                 int currentPlayerIndex = turnCounter % 2;
                 Player currentPlayer = players[currentPlayerIndex];
@@ -58,19 +59,45 @@
                 string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
 
+                // Put disc in board
+                PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);
+                gameState!.ExecutePlayerAction(move);
 
-                // For now, simulate a move and end after 10 turns
-                turnCounter++;
-
-                bool checkForWin = turnCounter >= 10; // Replace with actual win condition check
-                if (checkForWin)
+                if (rules!.CheckForWinning(board!))
                 {
-                    Logger.WriteLine("Game ended (demo mode, 10 turns max).");
+                    DisplayCurrentBoard();
+                    Logger.WriteLine($"Player {currentPlayer.PlayerId} wins!");
                     gameEnded = true;
+                }
+                else if (rules.CheckForDraw(board!))
+                {
+                    DisplayCurrentBoard();
+                    Logger.WriteLine("Game ended in a draw.");
+                    gameEnded = true;
+                }
+                else
+                {
+                    turnCounter++;
                 }
             }
         }
+        private void DisplayCurrentBoard()
+        {
+            BoardDisplay boardDisplay = new BoardDisplay();
 
+            if (Type == GameType.ConnectFour)
+            {
+                boardDisplay.ShowConnectFourBoard(board!);
+            }
+            else if (Type == GameType.Gomoku)
+            {
+                boardDisplay.ShowGomokuBoard(board!);
+            }
+            else
+            {
+                boardDisplay.ShowCommonBoard(board!);
+            }
+        }
         private void Initialize()
         {
             // Select game type
@@ -79,6 +106,8 @@
 
             // Get any game-specific parameters (extensible for future iterations)
             Dictionary<string, object> gameParameters = GetAdditionalGameParameters(selectedGameType);
+
+            rules = GameRulesFactory.CreateGameRules(selectedGameType);
 
             // Select game mode
             GameMode selectedGameMode = SelectGameMode();
@@ -97,7 +126,6 @@
             }
 
             board = new Board(rows, cols);
-            rules = GameRulesFactory.CreateGameRules(selectedGameType);
             gameState = new Game(board, rules);
 
             Logger.WriteLine($"\nGame initialized: {Type} - {Mode}");
@@ -134,20 +162,22 @@
 
         private List<Player> CreatePlayers(GameMode mode)
         {
+            LineBasedGameRules lineRules = (LineBasedGameRules)rules!;
+
             if (mode == GameMode.HumanVsHuman)
             {
                 return new List<Player>
                 {
-                    new Human(1),
-                    new Human(2)
+                    new Human(1, lineRules.Player1Symbol),
+                    new Human(2, lineRules.Player2Symbol)
                 };
             }
             else if (mode == GameMode.HumanVsAI)
             {
                 return new List<Player>
                 {
-                    new Human(1),
-                    new Human(2) // TODO: Replace with AI player when available
+                    new Human(1, lineRules.Player1Symbol),
+                    new Human(2, lineRules.Player2Symbol) // TODO: Replace with AI player when available
                 };
             }
 

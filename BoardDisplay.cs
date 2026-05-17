@@ -86,11 +86,9 @@ namespace OOP_BoardGames_Framework
 
         private void PrintColumnHeader(int columns)
         {
-            Console.Write(" ");
-
             for (int column = 0; column < columns; column++)
             {
-                Console.Write(" " + (column + 1) + " ");
+                Console.Write("  " + (column + 1) + " ");
             }
 
             Console.WriteLine();

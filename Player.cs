@@ -5,11 +5,13 @@ namespace OOP_BoardGames_Framework
     public class Player
     {
         public int PlayerId { get; }
-        public string? GamePiece { get; }
 
-        public Player(int playerId)
+        public string GamePiece { get; }
+
+        public Player(int playerId, string gamePiece)
         {
             PlayerId = playerId;
+            GamePiece = gamePiece;
         }
 
         public virtual string RequestAction(Board board, GameRules game, int turn)

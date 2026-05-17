@@ -4,7 +4,10 @@ namespace OOP_BoardGames_Framework
 {
     public class Human : Player
     {
-        public Human(int PlayerId) : base(PlayerId) { }
+        public Human(int playerId, string gamePiece) : base(playerId, gamePiece)
+        {
+
+        }
 
         // This method prompts the human player to enter their next action, reads the input, and validates it.
         public override string RequestAction(Board board, GameRules rules, int turn)

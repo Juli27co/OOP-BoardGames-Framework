@@ -78,7 +78,7 @@ namespace OOP_BoardGames_Framework
             }
         }
 
-        /* public bool IsBoardFull()
+        public bool IsBoardFull()
         {
             for (int row = 0; row < GetRowCount(); row++)
             {
@@ -92,7 +92,7 @@ namespace OOP_BoardGames_Framework
             } 
 
             return true;
-        } */
+        }
 
         private bool IsInsideBoard(int column, int row) //to avoid invalid positions
         {
