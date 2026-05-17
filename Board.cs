@@ -9,7 +9,13 @@ namespace OOP_BoardGames_Framework
     public class Board
     {
         private List<string[]> gridMatrix;
+        public List<string[]> GridMatrix
+        {
+            get { return gridMatrix; }
+            set { gridMatrix = value; }
+        }
 
+        public Board() { gridMatrix = new List<string[]>(); }
         public Board(int rows, int columns)
         {
             gridMatrix = new List<string[]>();
@@ -101,6 +107,8 @@ namespace OOP_BoardGames_Framework
                    column >= 0 &&
                    column < GetColumnCount();
         }
+
+
     }
 
 }
