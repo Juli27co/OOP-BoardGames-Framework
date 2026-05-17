@@ -11,19 +11,29 @@
         private Board? board;
         private GameRules? rules;
         private Game? gameState;
+
         public GameMode Mode { get; private set; }
         public GameType Type { get; private set; }
+
+        public GameRecord GameRecord { get; private set; }
+
+        private FileManager fileManager;
+
         public GameManager(GameMode mode, GameType type, Player player1, Player player2)
         {
             Mode = mode;
             Type = type;
             players = new List<Player> { player1, player2 };
             turnCounter = 0;
+            GameRecord = new GameRecord();
+            fileManager = new FileManager();
         }
         public GameManager()
         {
             players = new List<Player>();
             turnCounter = 0;
+            GameRecord = new GameRecord();
+            fileManager = new FileManager();
         }
         public void Run()
         {
@@ -39,9 +49,20 @@
                 // Execute the player's action
                 string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
+
+                if (action == "save")
+                {
+                    GameRecord.UpdateGameState(board, Type, Mode);
+                    fileManager.SaveGame(GameRecord);
+                    Logger.WriteLine($"Your game will be saved and you'll exit the game.");
+                    gameEnded = true;
+                    break;
+                }
+
                 // Put disc in board
                 PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);
                 gameState!.ExecutePlayerAction(move);
+                GameRecord.LogMove(move);
                 if (rules!.CheckForWinning(board!))
                 {
                     DisplayCurrentBoard();
@@ -82,15 +103,32 @@
         }
         private void Initialize()
         {
-            // Select game type
-            GameType selectedGameType = SelectGameType();
-            Type = selectedGameType;
+            GameType selectedGameType;
+            GameMode selectedGameMode;
+            // Select new game or load game
+            bool isNewGame = SelectStartOption() == 1;
+            if (isNewGame)
+            {
+                // Select game type & game mode
+                selectedGameType = SelectGameType();
+                Type = selectedGameType;
+                selectedGameMode = SelectGameMode();
+                Mode = selectedGameMode;
+            }
+            else
+            {
+                FileManager fileManager = new FileManager();
+                GameRecord = fileManager.LoadGame();
+                // Restore game type & game mode
+                Type = GameRecord.GameType;
+                selectedGameType = GameRecord.GameType;
+                Mode = GameRecord.GameMode;
+                selectedGameMode = GameRecord.GameMode;
+            }
+
             // Get any game-specific parameters (extensible for future iterations)
             Dictionary<string, object> gameParameters = GetAdditionalGameParameters(selectedGameType);
             rules = GameRulesFactory.CreateGameRules(selectedGameType);
-            // Select game mode
-            GameMode selectedGameMode = SelectGameMode();
-            Mode = selectedGameMode;
             // Create players based on selected mode
             players = CreatePlayers(selectedGameMode);
             // Initialize board and rules based on selected game
@@ -101,11 +139,41 @@
                 rows = (int)gameParameters["rows"];
                 cols = (int)gameParameters["cols"];
             }
-            board = new Board(rows, cols);
+
+            if (isNewGame)
+            {
+                board = new Board(rows, cols);
+            }
+            else
+            {
+                board = GameRecord.CurrentBoard;
+                turnCounter = GameRecord.MovesLog.Count() + 1;
+            }
             gameState = new Game(board, rules);
+
+
+
             Logger.WriteLine($"\nGame initialized: {Type} - {Mode}");
             Logger.WriteLine($"Player 1: {players[0].GetType().Name}, Player 2: {players[1].GetType().Name}\n");
         }
+
+
+        private int SelectStartOption()
+        {
+            if (!File.Exists(fileManager.SaveDirectory + fileManager.SaveFileName + ".json"))
+            {
+                return 1;
+            }
+            else
+            {
+                Logger.PrintHeader("SELECT AN OPTION");
+                Logger.PrintOption(1, "Start New Game");
+                Logger.PrintOption(2, "Continue Saved Game");
+                int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
+                return selection;
+            }
+        }
+
         private GameType SelectGameType()
         {
             Logger.PrintHeader("SELECT GAME TYPE");

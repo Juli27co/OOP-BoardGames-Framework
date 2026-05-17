@@ -12,7 +12,7 @@ namespace OOP_BoardGames_Framework
                 GameType = game.GameType,
                 CurrentBoard = game.CurrentBoard,
                 GameMode = game.GameMode,
-                MovesLog = game.movesLog
+                MovesLog = game.MovesLog
             };
             string jsonString = JsonSerializer.Serialize(savedData);
             Directory.CreateDirectory(saveDirectory);
@@ -22,10 +22,13 @@ namespace OOP_BoardGames_Framework
         }
         public GameRecord LoadGame() // Load Game: retrieve saved game data.
         {
-            string filePath = saveDirectory + ".json";
+            string filePath = SaveDirectory + SaveFileName + ".json";
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("Unable to load the game because the save file was not found.");
+            }
             string? jsonStringRead = File.ReadAllText(filePath);
             GameRecord? loadedData = JsonSerializer.Deserialize<GameRecord>(jsonStringRead);
-            if (loadedData == null) { throw new Exception("Saved data was not found."); }
             return loadedData;
         }
     }
