@@ -4,9 +4,7 @@ namespace OOP_BoardGames_Framework
     internal static class Logger
     {
         private const string HelpRequestText = "help";
-
-        // Custom method to read user input.
-        public static string ReadLine(string? request = null)
+        public static string ReadLine(string? request = null)// Custom method to read user input.
         {
             if (request != null)
             {
@@ -16,59 +14,46 @@ namespace OOP_BoardGames_Framework
             if (input == HelpRequestText)
             {
                 ShowHelpMessage();
-
                 return ReadLine(request);
             }
             else if (input == "save")
             {
                 throw new SaveAndExit();
             }
-
             return input;
         }
-
-        // Write a line to console
-        public static void WriteLine(string? message = null)
+        public static void WriteLine(string? message = null)// Write a line to console
         {
             Console.WriteLine(message);
         }
-
-        // Write a formatted line to console
-        public static void WriteLine(string format, params object?[] args)
+        public static void WriteLine(string format, params object?[] args)// Write a formatted line to console
         {
             Console.WriteLine(format, args);
         }
-
-        // Write to console without a newline
-        public static void Write(string? message)
+        public static void Write(string? message)// Write to console without a newline
         {
             Console.Write(message);
         }
-
-        // Write a formatted message without a newline
-        public static void Write(string format, params object?[] args)
+        public static void Write(string format, params object?[] args)// Write a formatted message without a newline
         {
             Console.Write(format, args);
         }
-
-        // Read integer input with validation
-        public static int ReadInt(string? prompt = null, int min = int.MinValue, int max = int.MaxValue)
+        public static int ReadInt(string? prompt = null, int min = int.MinValue, int max = int.MaxValue)// Read integer input with validation
         {
             while (true)
             {
-
                 if (prompt != null)
                 {
                     Write(prompt);
                 }
-
                 try
                 {
                     int result = int.Parse(Console.ReadLine() ?? "");
                     if (result >= min && result <= max)
                     {
                         return result;
-                    } else
+                    }
+                    else
                     {
                         throw new FormatException();
                     }
@@ -79,30 +64,21 @@ namespace OOP_BoardGames_Framework
                 }
             }
         }
-
-        // Display a section header
-        public static void PrintHeader(string headerText)
+        public static void PrintHeader(string headerText)// Display a section header
         {
             WriteLine($"\n>>>> {headerText} <<<<");
         }
-
-        // Display an option item (typically for menus)
-        public static void PrintOption(int number, string optionText)
+        public static void PrintOption(int number, string optionText)// Display an option item (typically for menus)
         {
             WriteLine($"{number}. {optionText}");
         }
-
-        // Clear the console
-        public static void Clear()
+        public static void Clear() // Clear the console
         {
             Console.Clear();
         }
-
-        // Method to display the help menu.
-        public static void ShowHelpMessage()
+        public static void ShowHelpMessage() // Method to display the help menu.
         {
             PrintHeader("HELP MENU");
         }
-
     }
 }

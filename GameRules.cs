@@ -5,7 +5,6 @@ namespace OOP_BoardGames_Framework
         public abstract int Columns { get; }
         public abstract int Rows { get; }
         public abstract int WinLength { get; }
-
         public abstract bool ValidatePlayerMove(Board board, PlayerMove move);
         public abstract bool CheckForWinning(Board board);
         public abstract void ExecuteMove(Board board, PlayerMove move, string playerSymbol);

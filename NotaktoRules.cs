@@ -3,11 +3,8 @@ namespace OOP_BoardGames_Framework
     public class NotaktoRules : GameRules
     {
         public override int Columns => throw new NotImplementedException();
-
         public override int Rows => throw new NotImplementedException();
-
         public override int WinLength => throw new NotImplementedException();
-
         public override bool ValidatePlayerMove(Board board, PlayerMove move)
         {
             {
@@ -26,6 +23,5 @@ namespace OOP_BoardGames_Framework
         {
             // Stub
         }
-
     }
 }

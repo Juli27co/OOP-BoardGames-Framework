@@ -55,6 +55,5 @@ namespace OOP_BoardGames_Framework
             row--;
             return true;
         }
-
     }
 }

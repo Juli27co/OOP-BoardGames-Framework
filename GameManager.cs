@@ -1,21 +1,9 @@
 ﻿namespace OOP_BoardGames_Framework
 {
     public enum GameMode
-    {
-        HumanVsHuman,
-        HumanVsAI,
-    }
-
+    { HumanVsHuman, HumanVsAI, }
     public enum GameType
-    {
-        ConnectFour,
-        Gomoku,
-        TicTacToe,
-        NumericalTicTacToe,
-        Notakto,
-        // Add more game types as needed
-    }
-
+    { ConnectFour, Gomoku, TicTacToe, NumericalTicTacToe, Notakto, } // Add more game types as needed
     internal class GameManager
     {
         private int turnCounter;
@@ -23,10 +11,8 @@
         private Board? board;
         private GameRules? rules;
         private Game? gameState;
-        
         public GameMode Mode { get; private set; }
         public GameType Type { get; private set; }
-
         public GameManager(GameMode mode, GameType type, Player player1, Player player2)
         {
             Mode = mode;
@@ -34,35 +20,28 @@
             players = new List<Player> { player1, player2 };
             turnCounter = 0;
         }
-
         public GameManager()
         {
             players = new List<Player>();
             turnCounter = 0;
         }
-
         public void Run()
         {
             Initialize();
-            
             bool gameEnded = false;
             while (!gameEnded)
             {
                 //TODO: Display the current game state here (board, scores, etc.)
                 DisplayCurrentBoard();
-
                 int currentPlayerIndex = turnCounter % 2;
                 Player currentPlayer = players[currentPlayerIndex];
                 Logger.WriteLine($"Turn {turnCounter + 1}: Player {currentPlayer.PlayerId}'s move.");
                 // Execute the player's action
-
                 string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
-
                 // Put disc in board
                 PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);
                 gameState!.ExecutePlayerAction(move);
-
                 if (rules!.CheckForWinning(board!))
                 {
                     DisplayCurrentBoard();
@@ -84,7 +63,6 @@
         private void DisplayCurrentBoard()
         {
             BoardDisplay boardDisplay = new BoardDisplay();
-
             if (Type == GameType.ConnectFour)
             {
                 boardDisplay.ShowConnectFourBoard(board!);
@@ -92,6 +70,10 @@
             else if (Type == GameType.Gomoku)
             {
                 boardDisplay.ShowGomokuBoard(board!);
+            }
+            if (Type == GameType.NumericalTicTacToe)
+            {
+                boardDisplay.ShowNumericalTicTacToeBoard(board!);
             }
             else
             {
@@ -103,19 +85,14 @@
             // Select game type
             GameType selectedGameType = SelectGameType();
             Type = selectedGameType;
-
             // Get any game-specific parameters (extensible for future iterations)
             Dictionary<string, object> gameParameters = GetAdditionalGameParameters(selectedGameType);
-
             rules = GameRulesFactory.CreateGameRules(selectedGameType);
-
             // Select game mode
             GameMode selectedGameMode = SelectGameMode();
             Mode = selectedGameMode;
-
             // Create players based on selected mode
             players = CreatePlayers(selectedGameMode);
-
             // Initialize board and rules based on selected game
             int rows = 3;
             int cols = 3;
@@ -124,71 +101,75 @@
                 rows = (int)gameParameters["rows"];
                 cols = (int)gameParameters["cols"];
             }
-
             board = new Board(rows, cols);
             gameState = new Game(board, rules);
-
             Logger.WriteLine($"\nGame initialized: {Type} - {Mode}");
             Logger.WriteLine($"Player 1: {players[0].GetType().Name}, Player 2: {players[1].GetType().Name}\n");
         }
-
         private GameType SelectGameType()
         {
             Logger.PrintHeader("SELECT GAME TYPE");
             GameType[] gameTypes = (GameType[])Enum.GetValues(typeof(GameType));
-
             for (int i = 0; i < gameTypes.Length; i++)
             {
                 Logger.PrintOption(i + 1, gameTypes[i].ToString());
             }
-
             int selection = Logger.ReadInt($"Enter your choice (1-{gameTypes.Length}): ", 1, gameTypes.Length);
             return gameTypes[selection - 1];
         }
-
         private GameMode SelectGameMode()
         {
             Logger.PrintHeader("SELECT GAME MODE");
             GameMode[] gameModes = (GameMode[])Enum.GetValues(typeof(GameMode));
-
             for (int i = 0; i < gameModes.Length; i++)
             {
                 Logger.PrintOption(i + 1, gameModes[i].ToString());
             }
-
             int selection = Logger.ReadInt($"Enter your choice (1-{gameModes.Length}): ", 1, gameModes.Length);
             return gameModes[selection - 1];
         }
-
         private List<Player> CreatePlayers(GameMode mode)
         {
-            LineBasedGameRules lineRules = (LineBasedGameRules)rules!;
-
+            string player1Symbol;
+            string player2Symbol;
+            if (Type == GameType.NumericalTicTacToe)
+            {
+                player1Symbol = "Odd";
+                player2Symbol = "Even";
+            }
+            else if (Type == GameType.Notakto)
+            {
+                player1Symbol = "X";
+                player2Symbol = "X"; // Placeholder for Notakto
+            }
+            else
+            {
+                LineBasedGameRules lineRules = (LineBasedGameRules)rules!;
+                player1Symbol = lineRules.Player1Symbol;
+                player2Symbol = lineRules.Player2Symbol;
+            }
             if (mode == GameMode.HumanVsHuman)
             {
                 return new List<Player>
-                {
-                    new Human(1, lineRules.Player1Symbol),
-                    new Human(2, lineRules.Player2Symbol)
-                };
+        {
+            new Human(1, player1Symbol),
+            new Human(2, player2Symbol)
+        };
             }
             else if (mode == GameMode.HumanVsAI)
             {
                 return new List<Player>
-                {
-                    new Human(1, lineRules.Player1Symbol),
-                    new Human(2, lineRules.Player2Symbol) // TODO: Replace with AI player when available
-                };
+        {
+            new Human(1, player1Symbol),
+            new Human(2, player2Symbol) // TODO: Replace with AI player when available
+        };
             }
-
             throw new ArgumentException("Unknown game mode.");
         }
-
         private Dictionary<string, object> GetAdditionalGameParameters(GameType gameType)
         {
             // Collect board size (rows/cols) according to game-specific rules
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-
             switch (gameType)
             {
                 case GameType.TicTacToe:
@@ -198,38 +179,27 @@
                     parameters["cols"] = 3;
                     parameters["numberOfBoards"] = 3;
                     break;
-
                 case GameType.ConnectFour:
                     // Standard Connect Four board is 6 rows x 7 columns
                     parameters["rows"] = 6;
                     parameters["cols"] = 7;
                     break;
-
                 case GameType.Gomoku:
                     // Standard Gomoku board is 15x15
                     parameters["rows"] = 15;
                     parameters["cols"] = 15;
                     break;
-
                 case GameType.NumericalTicTacToe:
-                    // Ask user for custom board size
                     Logger.PrintHeader("NUMERICAL TIC TAC TOE - BOARD SIZE");
-                    Logger.WriteLine("You chose Numerical TicTacToe. Please enter the desired board dimensions.");
-                    int minSize = 1;
-                    int maxSize = 50;
-                    int rows = Logger.ReadInt($"Number of rows ({minSize}-{maxSize}): ", minSize, maxSize);
-                    int cols = Logger.ReadInt($"Number of columns ({minSize}-{maxSize}): ", minSize, maxSize);
-                    parameters["rows"] = rows;
-                    parameters["cols"] = cols;
+                    Logger.WriteLine("Enter one number only. Example: 3 creates a 3x3 board.");
+                    int gridSize = Logger.ReadInt("Board size: ", 3, 9);
+                    parameters["rows"] = gridSize;
+                    parameters["cols"] = gridSize;
+                    parameters["gridSize"] = gridSize;
                     break;
-
                 default:
-                    // Fallback to 3x3
-                    parameters["rows"] = 3;
-                    parameters["cols"] = 3;
-                    break;
+                    throw new ArgumentException("Unknown game type.");
             }
-
             return parameters;
         }
     }
