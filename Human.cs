@@ -7,8 +7,8 @@
         }
         public override string RequestAction(Board board, GameRules rules, int turn)// This method prompts the human player to enter their next action, reads the input, and validates it.
         {
-            Console.WriteLine($"Player #{this.PlayerId}: Type your next action."); 
-            
+            Console.WriteLine($"Player #{this.PlayerId}: Type your next action.");
+
             if (rules is NumericalTicTacToeRules)
             {
                 string numberType = this.PlayerId == 1 ? "odd" : "even";
@@ -32,9 +32,9 @@
                 Logger.WriteLine($"Player #{this.PlayerId}: Type your next action.");
             }
             string action = Logger.ReadLine() ?? "";
-            if (action == "save")
+            if (action == "save" || action == "redo" || action == "undo")
             {
-              return action;
+                return action;
             }
             PlayerMove move = new PlayerMove(action, this, turn);
             try
