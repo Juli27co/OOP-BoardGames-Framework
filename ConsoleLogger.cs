@@ -19,10 +19,10 @@ namespace OOP_BoardGames_Framework
 
                 return ReadLine(request);
             }
-            else if (input == "save")
-            {
-                throw new SaveAndExit();
-            }
+            // else if (input == "save")
+            // {
+            //     throw new SaveAndExit();
+            // }
 
             return input;
         }
@@ -68,7 +68,8 @@ namespace OOP_BoardGames_Framework
                     if (result >= min && result <= max)
                     {
                         return result;
-                    } else
+                    }
+                    else
                     {
                         throw new FormatException();
                     }

@@ -11,8 +11,8 @@ namespace OOP_BoardGames_Framework
     {
         public ColumnFullException() : base("Selected Column is full, please select a different column") { }
     }
-    internal class SaveAndExit : Exception
-    {
-        public SaveAndExit() : base("Your game will save and you'll exit the game") { }
-    }
+    // internal class SaveAndExit : Exception
+    // {
+    //     public SaveAndExit() : base("Your game will save and you'll exit the game") { }
+    // }
 }

@@ -14,6 +14,7 @@ namespace OOP_BoardGames_Framework
         {
             Console.WriteLine($"Player #{this.PlayerId}: Type your next action.");
             string action = Logger.ReadLine() ?? "";
+            if (action == "save") return action;
 
             PlayerMove move = new PlayerMove(action, this, turn);
 

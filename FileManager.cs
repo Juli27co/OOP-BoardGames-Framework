@@ -1,12 +1,10 @@
 namespace OOP_BoardGames_Framework
-
 {
     using System.Text.Json;
     public class FileManager
     {
-
-        private string saveDirectory = "savedFile/";
-        private string saveFileName = "savedGameFile";
+        public string SaveDirectory { get; } = "savedFile/";
+        public string SaveFileName { get; } = "savedGameFile";
 
         // Save Game: it saves game record into json file and txt file.
         public void SaveGame(GameRecord game)
@@ -16,27 +14,25 @@ namespace OOP_BoardGames_Framework
                 GameType = game.GameType,
                 CurrentBoard = game.CurrentBoard,
                 GameMode = game.GameMode,
-                MovesLog = game.movesLog
+                MovesLog = game.MovesLog
             };
-
             string jsonString = JsonSerializer.Serialize(savedData);
-            Directory.CreateDirectory(saveDirectory);
-            File.WriteAllText(saveDirectory + saveFileName + ".json", jsonString);
-            File.WriteAllText(saveDirectory + saveFileName + ".txt", jsonString);
-            Console.WriteLine("The game is saved successfully.");
-
+            Directory.CreateDirectory(SaveDirectory);
+            File.WriteAllText(SaveDirectory + SaveFileName + ".json", jsonString);
+            File.WriteAllText(SaveDirectory + SaveFileName + ".txt", jsonString);
         }
 
         // Load Game: retrieve saved game data.
         public GameRecord LoadGame()
         {
-            string filePath = saveDirectory + ".json";
+            string filePath = SaveDirectory + SaveFileName + ".json";
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("Unable to load the game because the save file was not found.");
+            }
             string? jsonStringRead = File.ReadAllText(filePath);
             GameRecord? loadedData = JsonSerializer.Deserialize<GameRecord>(jsonStringRead);
-            if (loadedData == null) { throw new Exception("Saved data was not found."); }
             return loadedData;
-
         }
-
     }
 }

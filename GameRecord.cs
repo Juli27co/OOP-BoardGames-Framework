@@ -5,35 +5,32 @@ namespace OOP_BoardGames_Framework
         public GameType GameType { get; set; }
         public Board CurrentBoard { get; set; }
         public GameMode GameMode { get; set; }
-        public Stack<PlayerMove> movesLog { get; set; } = new Stack<PlayerMove>();
-        public Stack<PlayerMove> redoMoves { get; set; } = new Stack<PlayerMove>();
-
+        public Stack<PlayerMove> MovesLog { get; set; } = new Stack<PlayerMove>();
+        public Stack<PlayerMove> RedoMoves { get; set; } = new Stack<PlayerMove>();
         public GameRecord() { }
-        public GameRecord(Board board, GameType gameType, GameMode gameMode)
+        public void UpdateGameState(Board board, GameType gameType, GameMode gameMode)
         {
             this.CurrentBoard = board;
             this.GameType = gameType;
             this.GameMode = gameMode;
         }
 
-
         public void LogMove(PlayerMove move)
         {
-            movesLog.Push(move);
-            redoMoves.Clear();
+            MovesLog.Push(move);
+            RedoMoves.Clear();
         }
-        public PlayerMove Undo()
+        public PlayerMove UndoMove()
         {
-            PlayerMove removedMove = movesLog.Pop();
-            redoMoves.Push(removedMove);
-            return movesLog.Peek();
+            PlayerMove removedMove = MovesLog.Pop();
+            RedoMoves.Push(removedMove);
+            return MovesLog.Peek();
         }
-        public PlayerMove Redo()
+        public PlayerMove RedoMove()
         {
-            PlayerMove redoMove = redoMoves.Pop();
-            movesLog.Push(redoMove);
-            return movesLog.Peek();
+            PlayerMove redoMove = RedoMoves.Pop();
+            MovesLog.Push(redoMove);
+            return MovesLog.Peek();
         }
-
     }
 }
