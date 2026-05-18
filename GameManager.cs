@@ -72,10 +72,20 @@
                 {
                     if (action == "undo")
                     {
+                        if (GameRecord.MovesLog.Count() == 0)
+                        {
+                            Logger.WriteLine("There are no previous turns available. Please try again.");
+                            continue;
+                        }
                         GameRecord.UndoMove();
                     }
                     else
                     {
+                        if (GameRecord.RedoMoves.Count() == 0)
+                        {
+                            Logger.WriteLine("There are no turns available to redo. Please try again.");
+                            continue;
+                        }
                         GameRecord.RedoMove();
                     }
 
