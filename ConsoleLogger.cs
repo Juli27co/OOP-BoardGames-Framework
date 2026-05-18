@@ -16,10 +16,6 @@ namespace OOP_BoardGames_Framework
                 ShowHelpMessage();
                 return ReadLine(request);
             }
-            else if (input == "save")
-            {
-                throw new SaveAndExit();
-            }
             return input;
         }
         public static void WriteLine(string? message = null)// Write a line to console

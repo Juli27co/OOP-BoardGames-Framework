@@ -64,6 +64,19 @@
                 }
             }
         }
+
+        public void Clear()
+        {
+            for (int row = 0; row < GetRowCount(); row++)
+            {
+                for (int column = 0; column < GetColumnCount(); column++)
+                {
+                    gridMatrix[row][column] = " ";
+                }
+            }
+        }
+
+
         public bool IsBoardFull()
         {
             for (int row = 0; row < GetRowCount(); row++)

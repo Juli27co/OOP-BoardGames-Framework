@@ -41,9 +41,9 @@
                 Logger.WriteLine($"Player #{this.PlayerId}: Type your next action.");
             }
             string action = Logger.ReadLine() ?? "";
-            if (action == "save")
+            if (action == "save" || action == "redo" || action == "undo")
             {
-              return action;
+                return action;
             }
             PlayerMove move = new PlayerMove(action, this, turn);
             try

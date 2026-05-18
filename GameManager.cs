@@ -55,8 +55,27 @@
                     GameRecord.UpdateGameState(board, Type, Mode);
                     fileManager.SaveGame(GameRecord);
                     Logger.WriteLine($"Your game will be saved and you'll exit the game.");
-                    gameEnded = true;
                     break;
+                }
+                else if (action == "undo" || action == "redo")
+                {
+                    if (action == "undo")
+                    {
+                        GameRecord.UndoMove();
+                    }
+                    else
+                    {
+                        GameRecord.RedoMove();
+                    }
+
+                    board.Clear();
+                    foreach (PlayerMove restoreMove in GameRecord.MovesLog.Reverse())
+                    {
+                        gameState!.ExecutePlayerAction(restoreMove);
+                    }
+
+                    turnCounter = GameRecord.MovesLog.Count();
+                    continue;
                 }
 
                 // Put disc in board
@@ -147,7 +166,7 @@
             else
             {
                 board = GameRecord.CurrentBoard;
-                turnCounter = GameRecord.MovesLog.Count() + 1;
+                turnCounter = GameRecord.MovesLog.Count();
             }
             gameState = new Game(board, rules);
 
