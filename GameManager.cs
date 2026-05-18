@@ -53,6 +53,12 @@
 
                 // Request player action
                 string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);
+                if (string.IsNullOrWhiteSpace(action))
+                {
+                    Logger.WriteLine("No valid move found.");
+                    gameEnded = true;
+                    continue;
+                }
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
 
                 if (action == "save")
@@ -97,7 +103,19 @@
                 if (rules!.CheckForWinning(board!))
                 {
                     DisplayCurrentBoard();
-                    Logger.WriteLine($"Player {currentPlayer.PlayerId} wins!");
+                    // for Notakto checking win 
+                    if (Type == GameType.Notakto)
+                    {
+                        int otherPlayerIndex = (currentPlayerIndex + 1) % 2;
+                        Player winner = players[otherPlayerIndex];
+
+                        Logger.WriteLine($"Player {winner.PlayerId} wins!");
+                    }
+                    else
+                    {
+                        Logger.WriteLine($"Player {currentPlayer.PlayerId} wins!");
+                    }
+
                     gameEnded = true;
                 }
                 else if (rules.CheckForDraw(board!))
@@ -115,8 +133,8 @@
         }
         private void DisplayCurrentBoard()
         {
-            Logger.PrintBoardSectionStart();
             BoardDisplay boardDisplay = new BoardDisplay();
+
             if (Type == GameType.ConnectFour)
             {
                 boardDisplay.ShowConnectFourBoard(board!);
@@ -129,11 +147,14 @@
             {
                 boardDisplay.ShowNumericalTicTacToeBoard(board!);
             }
+            else if (Type == GameType.Notakto)
+            {
+                boardDisplay.ShowNotaktoBoard(board!);
+            }
             else
             {
                 boardDisplay.ShowCommonBoard(board!);
             }
-            Logger.PrintBoardSectionEnd();
         }
         private void Initialize()
         {
@@ -263,7 +284,7 @@
                 return new List<Player>
         {
             new Human(1, player1Symbol),
-            new Human(2, player2Symbol) // TODO: Replace with AI player when available
+            new Computer(2, player2Symbol) // TODO: Replace with AI player when available
         };
             }
             throw new ArgumentException("Unknown game mode.");
