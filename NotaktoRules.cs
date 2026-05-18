@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace OOP_BoardGames_Framework
 {
     public class NotaktoRules : GameRules
@@ -5,7 +7,7 @@ namespace OOP_BoardGames_Framework
         private const int BoardSize = 3;
         private const int NumberOfBoards = 3;
         private const string Piece = "X";
-        
+
 
         public override int Columns => BoardSize;
         public override int Rows => BoardSize;
@@ -112,6 +114,37 @@ namespace OOP_BoardGames_Framework
         private int ToGlobalColumn(int boardIndex, int localColumn)
         {
             return boardIndex * BoardSize + localColumn;
+        }
+        public override List<PlayerMove> GetValidMoves(Board board, Player player) // find all moves the player can play for AI testing
+        {
+            List<PlayerMove> moves = new List<PlayerMove>();
+
+            for (int boardNumber = 1; boardNumber <= NumberOfBoards; boardNumber++)
+            {
+                for (int position = 1; position <= BoardSize * BoardSize; position++)
+                {
+                    PlayerMove move = new PlayerMove(boardNumber + "," + position, player, 0);
+
+                    if (ValidatePlayerMove(board, move))
+                    {
+                        moves.Add(move);
+                    }
+                }
+            }
+
+            return moves;
+        }
+        public override void UndoMove(Board board, PlayerMove move) // undo the AI test move
+        {
+            if (TryParseMove(move, out int boardIndex, out int column, out int row))
+            {
+                int globalColumn = ToGlobalColumn(boardIndex, column);
+
+                List<int[]> spots = new List<int[]>();
+                spots.Add(new int[] { globalColumn, row });
+
+                board.RemoveElements(spots, Piece);
+            }
         }
 
         private bool TryParseMove(PlayerMove move, out int boardIndex, out int column, out int row)
