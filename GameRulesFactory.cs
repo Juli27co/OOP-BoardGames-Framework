@@ -2,7 +2,7 @@ namespace OOP_BoardGames_Framework
 {
     public static class GameRulesFactory
     {
-        public static GameRules CreateGameRules(GameType gameType)
+        public static GameRules CreateGameRules(GameType gameType, int gridSize = 3)
         {
             switch (gameType)
             {
@@ -13,7 +13,7 @@ namespace OOP_BoardGames_Framework
                     return new ConnectFourRules();
 
                 case GameType.NumericalTicTacToe:
-                    return new NumericalTicTacToeRules();
+                    return new NumericalTicTacToeRules(gridSize);
 
                 case GameType.Notakto:
                     return new NotaktoRules();

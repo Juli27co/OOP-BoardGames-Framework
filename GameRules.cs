@@ -15,7 +15,7 @@ namespace OOP_BoardGames_Framework
         }
         protected bool IsInsideBoard(int column, int row)
         {
-            return column >= 0 && column < Columns && row >= 0 & row < Rows;
+            return column >= 0 && column < Columns && row >= 0 && row < Rows;
         }
         public virtual bool CheckForDraw(Board board)
         {

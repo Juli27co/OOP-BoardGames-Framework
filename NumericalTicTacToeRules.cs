@@ -7,6 +7,10 @@ namespace OOP_BoardGames_Framework
         public override int WinLength { get; }
         public NumericalTicTacToeRules(int gridSize = 3) //Set grid size to 3 by defualt if not custom
         {
+            if (gridSize < 3)
+            {
+                throw new ArgumentException("Numerical Tic-Tac-Toe must be at least 3x3.");
+            }
             Columns = gridSize;
             Rows = gridSize;
             WinLength = gridSize;
@@ -39,7 +43,10 @@ namespace OOP_BoardGames_Framework
             {
                 throw new InvalidOperationException("Invalid Numerical Tic-Tac-Toe move.");
             }
-            board.AddElement(column, row, number.ToString()); //String as playerMove currently stores items as a string
+            if (!board.AddElement(column, row, number.ToString()))
+            {
+                throw new InvalidOperationException("That space is already taken.");
+            }
         }
         private bool TryParseMove(PlayerMove move, out int column, out int row, out int number) //Convert mentioned above into useable numbers
         {
@@ -49,7 +56,26 @@ namespace OOP_BoardGames_Framework
                 return false;
             }
             string[] parts = move.Move.Split(',');
-            return parts.Length == 3 && int.TryParse(parts[0].Trim(), out column) && int.TryParse(parts[1].Trim(), out row) && int.TryParse(parts[2].Trim(), out number);
+            if (parts.Length != 2)
+            {
+                return false;
+            }
+            if (!int.TryParse(parts[0].Trim(), out int position))
+            {
+                return false;
+            }
+            if (!int.TryParse(parts[1].Trim(), out number))
+            {
+                return false;
+            }
+            if (position < 1 || position > Columns * Rows)
+            {
+                return false;
+            }
+            position--; // converts screen input into zero-based board index
+            row = position / Columns;
+            column = position % Columns;
+            return true;
         }//Validates the 3 parts of the move
         private bool CheckDirection(Board board, int initialColumn, int initialRow, int columnDirectionStep, int rowDirectionStep)
         { //Adjusted version of my code from LineBasedGame
@@ -59,7 +85,7 @@ namespace OOP_BoardGames_Framework
                 int column = initialColumn + (count * columnDirectionStep);
                 int row = initialRow + (count * rowDirectionStep);
                 if (!IsInsideBoard(column, row) ||
-                    !int.TryParse(board.GetCell(column, row), out int number))
+                !int.TryParse(board.GetCell(column, row), out int number))
                 {
                     return false;
                 }

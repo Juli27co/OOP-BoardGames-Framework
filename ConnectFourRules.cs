@@ -44,7 +44,12 @@ namespace OOP_BoardGames_Framework
             {
                 return false;
             }
-            return int.TryParse(move.Move.Trim(), out column);
+            if (!int.TryParse(move.Move.Trim(), out column))
+            {
+                return false;
+            }
+            column--;
+            return true;
         }
     }
 }
