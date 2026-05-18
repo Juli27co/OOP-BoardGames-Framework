@@ -2,7 +2,6 @@
 {
     internal static class Logger
     {
-        private const string HelpRequestText = "help";
         public static string ReadLine(string? request = null)// Custom method to read user input.
         {
             if (request != null)
@@ -10,12 +9,6 @@
                 Console.WriteLine(request);
             }
             string input = Console.ReadLine() ?? "";
-            if (input == HelpRequestText)
-            {
-                ShowHelpMessage();
-                Logger.Clear();
-                return "help"; // Return "help" instead of recursing - let caller handle redisplay
-            }
             return input;
         }
         public static void WriteLine(string? message = null)// Write a line to console
@@ -74,6 +67,7 @@
         }
         public static void ShowHelpMessage() // Method to display the help menu.
         {
+            //Clear();
             PrintHeader("HELP MENU");
             WriteLine("\n  SPECIAL COMMANDS:");
             WriteLine("");
