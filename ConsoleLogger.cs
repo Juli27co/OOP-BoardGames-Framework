@@ -92,37 +92,27 @@
             WriteLine("");
             WriteLine(new string('─', 60));
         }
-
         public static void PrintTurnHeader(GameType gameType, GameMode gameMode, int turnNumber, Player currentPlayer)
         {
             WriteLine("\n" + new string('=', 60));
             WriteLine($"  GAME: {gameType} | MODE: {gameMode}");
             WriteLine($"  TURN: {turnNumber}");
             WriteLine(new string('=', 60));
-
             WriteLine($"\n  >>>  PLAYER {currentPlayer.PlayerId}'s TURN - {currentPlayer.GetType().Name}  <<<");
             WriteLine("");
         }
-
         public static void PrintBoardSectionStart()
         {
             WriteLine(new string('─', 60));
             WriteLine("  CURRENT BOARD");
             WriteLine(new string('─', 60));
         }
-
         public static void PrintBoardSectionEnd()
         {
             WriteLine(new string('─', 60));
         }
-
         public enum InstructionLevel
-        {
-            Main,
-            Sub,
-            None
-        }
-
+        { Main, Sub, None }
         public static void PrintInstructionsSection(params (string instruction, InstructionLevel level)[] instructions)
         {
             WriteLine(new string('─', 60));
@@ -131,7 +121,6 @@
             foreach (var (instruction, level) in instructions)
             {
                 string prefix = "";
-
                 switch (level)
                 {
                     case InstructionLevel.Main:
@@ -141,7 +130,6 @@
                         prefix = "    └─ ";
                         break;
                 }
-
                 WriteLine(prefix + instruction);
             }
             WriteLine(new string('─', 60));

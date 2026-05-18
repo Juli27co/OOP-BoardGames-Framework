@@ -32,12 +32,10 @@
                 return this.RequestAction(board, rules, turn);
             }
         }
-
         private void DisplayGameInstructions(GameRules rules)
         {
             List<(string instruction, Logger.InstructionLevel level)> instructions = new();
             instructions.Add(($"Player #{this.PlayerId}: Type your next action.", Logger.InstructionLevel.Main));
-
             if (rules is NumericalTicTacToeRules)
             {
                 string numberType = this.PlayerId == 1 ? "odd" : "even";
@@ -65,7 +63,6 @@
                 instructions.Add(("   4 5 6   |  4 5 6   |  4 5 6", Logger.InstructionLevel.None));
                 instructions.Add(("   7 8 9   |  7 8 9   |  7 8 9", Logger.InstructionLevel.None));
             }
-
             Logger.PrintInstructionsSection(instructions.ToArray());
         }
     }

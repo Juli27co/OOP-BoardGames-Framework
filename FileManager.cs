@@ -28,7 +28,7 @@ namespace OOP_BoardGames_Framework
             }
             string? jsonStringRead = File.ReadAllText(filePath);
             GameRecord? loadedData = JsonSerializer.Deserialize<GameRecord>(jsonStringRead);
-            return loadedData;
+            return loadedData!;
         }
     }
 }

@@ -9,14 +9,15 @@
             this.currentBoard = currentBoard;
             this.gameRules = gameRules;
         }
-        public void ExecutePlayerAction(PlayerMove move)
+        public bool ExecutePlayerAction(PlayerMove move)
         {
             if (!gameRules.ValidatePlayerMove(currentBoard, move))
             {
-                return;
+                return false;
             }
             string playerSymbol = move.Player.GamePiece;
             gameRules.ExecuteMove(currentBoard, move, playerSymbol);
+            return true;
         }
         public Board GetCurrentBoard()
         {

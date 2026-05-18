@@ -64,7 +64,6 @@
                 }
             }
         }
-
         public void Clear()
         {
             for (int row = 0; row < GetRowCount(); row++)
@@ -75,8 +74,6 @@
                 }
             }
         }
-
-
         public bool IsBoardFull()
         {
             for (int row = 0; row < GetRowCount(); row++)
