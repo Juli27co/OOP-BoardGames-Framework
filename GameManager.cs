@@ -15,15 +15,6 @@
         public GameType Type { get; private set; }
         public GameRecord GameRecord { get; private set; }
         private FileManager fileManager;
-        public GameManager(GameMode mode, GameType type, Player player1, Player player2)
-        {
-            Mode = mode;
-            Type = type;
-            players = new List<Player> { player1, player2 };
-            turnCounter = 0;
-            GameRecord = new GameRecord();
-            fileManager = new FileManager();
-        }
         public GameManager()
         {
             players = new List<Player>();
@@ -52,7 +43,7 @@
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
                 if (action == "save")
                 {
-                    GameRecord.UpdateGameState(board, Type, Mode);
+                    GameRecord.UpdateGameState(board!, Type, Mode);
                     fileManager.SaveGame(GameRecord);
                     Logger.WriteLine($"Your game will be saved and you'll exit the game.");
                     break;
@@ -77,7 +68,7 @@
                         }
                         GameRecord.RedoMove();
                     }
-                    board.Clear();
+                    board!.Clear();
                     foreach (PlayerMove restoreMove in GameRecord.MovesLog.Reverse())
                     {
                         gameState!.ExecutePlayerAction(restoreMove);
