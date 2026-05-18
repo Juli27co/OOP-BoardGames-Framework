@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace OOP_BoardGames_Framework
 {
     public abstract class GameRules
@@ -12,6 +10,10 @@ namespace OOP_BoardGames_Framework
         public abstract void ExecuteMove(Board board, PlayerMove move, string playerSymbol);
         public virtual bool ApplyMove(Board board, PlayerMove move) // let AI test a move on the board
         {
+            if (!ValidatePlayerMove(board, move))
+            {
+                return false;
+            }
             ExecuteMove(board, move, move.Player.GamePiece);
             return true;
         }

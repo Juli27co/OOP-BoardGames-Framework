@@ -21,6 +21,11 @@ namespace OOP_BoardGames_Framework
         }
         public void UndoMove()
         {
+            if (MovesLog.Count == 0)
+            {
+                Logger.WriteLine("There are no moves to undo.");
+                return;
+            }
             PlayerMove removedMove = MovesLog.Pop();
             RedoMoves.Push(removedMove);
         }

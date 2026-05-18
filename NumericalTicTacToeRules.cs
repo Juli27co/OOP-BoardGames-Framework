@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace OOP_BoardGames_Framework
 {
     public class NumericalTicTacToeRules : GameRules
@@ -53,22 +51,18 @@ namespace OOP_BoardGames_Framework
         public override List<PlayerMove> GetValidMoves(Board board, Player player) // find all moves the player can play for AI testing
         {
             List<PlayerMove> moves = new List<PlayerMove>();
-
             int max = Rows * Columns;
-
             for (int position = 1; position <= max; position++)
             {
                 for (int number = 1; number <= max; number++)
                 {
                     PlayerMove move = new PlayerMove(position + "," + number, player, 0);
-
                     if (ValidatePlayerMove(board, move))
                     {
                         moves.Add(move);
                     }
                 }
             }
-
             return moves;
         }
         public override void UndoMove(Board board, PlayerMove move) // undo the AI test move
@@ -77,7 +71,6 @@ namespace OOP_BoardGames_Framework
             {
                 List<int[]> spots = new List<int[]>();
                 spots.Add(new int[] { column, row });
-
                 board.RemoveElements(spots, number.ToString());
             }
         }

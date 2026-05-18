@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace OOP_BoardGames_Framework
 {
     public class NotaktoRules : GameRules
@@ -7,12 +5,9 @@ namespace OOP_BoardGames_Framework
         private const int BoardSize = 3;
         private const int NumberOfBoards = 3;
         private const string Piece = "X";
-
-
         public override int Columns => BoardSize;
         public override int Rows => BoardSize;
         public override int WinLength => BoardSize;
-
         public override bool ValidatePlayerMove(Board board, PlayerMove move)
         {
             if (!TryParseMove(move, out int boardIndex, out int column, out int row))
@@ -26,7 +21,6 @@ namespace OOP_BoardGames_Framework
             int globalColumn = ToGlobalColumn(boardIndex, column);
             return board.IsCellEmpty(globalColumn, row);
         }
-
         public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
             if (!TryParseMove(move, out int boardIndex, out int column, out int row))
@@ -36,7 +30,6 @@ namespace OOP_BoardGames_Framework
             int globalColumn = ToGlobalColumn(boardIndex, column);
             board.AddElement(globalColumn, row, Piece);
         }
-
         public override bool CheckForWinning(Board board)
         {
             for (int b = 0; b < NumberOfBoards; b++)
@@ -48,12 +41,10 @@ namespace OOP_BoardGames_Framework
             }
             return true;
         }
-
         public override bool CheckForDraw(Board board)
         {
             return false;
         }
-
         public bool[] GetDeadBoards(Board board)
         {
             bool[] dead = new bool[NumberOfBoards];
@@ -63,7 +54,6 @@ namespace OOP_BoardGames_Framework
             }
             return dead;
         }
-
         private bool IsBoardDead(Board board, int boardIndex)
         {
             int colOffset = boardIndex * BoardSize;
@@ -91,7 +81,6 @@ namespace OOP_BoardGames_Framework
             }
             return false;
         }
-
         private bool IsLineComplete(Board board, int startCol, int startRow, int dc, int dr)
         {
             for (int i = 0; i < WinLength; i++)
@@ -110,7 +99,6 @@ namespace OOP_BoardGames_Framework
             }
             return true;
         }
-
         private int ToGlobalColumn(int boardIndex, int localColumn)
         {
             return boardIndex * BoardSize + localColumn;
@@ -118,20 +106,17 @@ namespace OOP_BoardGames_Framework
         public override List<PlayerMove> GetValidMoves(Board board, Player player) // find all moves the player can play for AI testing
         {
             List<PlayerMove> moves = new List<PlayerMove>();
-
             for (int boardNumber = 1; boardNumber <= NumberOfBoards; boardNumber++)
             {
                 for (int position = 1; position <= BoardSize * BoardSize; position++)
                 {
                     PlayerMove move = new PlayerMove(boardNumber + "," + position, player, 0);
-
                     if (ValidatePlayerMove(board, move))
                     {
                         moves.Add(move);
                     }
                 }
             }
-
             return moves;
         }
         public override void UndoMove(Board board, PlayerMove move) // undo the AI test move
@@ -139,14 +124,11 @@ namespace OOP_BoardGames_Framework
             if (TryParseMove(move, out int boardIndex, out int column, out int row))
             {
                 int globalColumn = ToGlobalColumn(boardIndex, column);
-
                 List<int[]> spots = new List<int[]>();
                 spots.Add(new int[] { globalColumn, row });
-
                 board.RemoveElements(spots, Piece);
             }
         }
-
         private bool TryParseMove(PlayerMove move, out int boardIndex, out int column, out int row)
         {
             boardIndex = 0;
