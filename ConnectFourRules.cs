@@ -31,7 +31,7 @@ namespace OOP_BoardGames_Framework
             {
                 if (board.IsCellEmpty(column, row))
                 {
-                    board.PlaceSymbol(column, row, playerSymbol);
+                    board.AddElement(column, row, playerSymbol);
                     return;
                 }
             }

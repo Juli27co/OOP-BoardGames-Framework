@@ -39,7 +39,7 @@ namespace OOP_BoardGames_Framework
             {
                 throw new InvalidOperationException("Invalid Numerical Tic-Tac-Toe move.");
             }
-            board.GamePiece(column, row, number.ToString()); //String as playerMove currently stores items as a string
+            board.AddElement(column, row, number.ToString()); //String as playerMove currently stores items as a string
         }
         private bool TryParseMove(PlayerMove move, out int column, out int row, out int number) //Convert mentioned above into useable numbers
         {

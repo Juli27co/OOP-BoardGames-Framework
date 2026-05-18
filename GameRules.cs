@@ -8,6 +8,11 @@ namespace OOP_BoardGames_Framework
         public abstract bool ValidatePlayerMove(Board board, PlayerMove move);
         public abstract bool CheckForWinning(Board board);
         public abstract void ExecuteMove(Board board, PlayerMove move, string playerSymbol);
+
+        public virtual Board CreateGrid()
+        {
+            return new Board(Rows, Columns);
+        }
         protected bool IsInsideBoard(int column, int row)
         {
             return column >= 0 && column < Columns && row >= 0 & row < Rows;

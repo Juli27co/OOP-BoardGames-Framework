@@ -1,4 +1,4 @@
-namespace OOP_BoardGames_Framework
+/* namespace OOP_BoardGames_Framework
 {
     public class NotaktoRules : GameRules
     {
@@ -22,3 +22,4 @@ namespace OOP_BoardGames_Framework
         }
     }
 }
+*/

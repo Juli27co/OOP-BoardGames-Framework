@@ -6,6 +6,10 @@ namespace OOP_BoardGames_Framework
     {
         public int PlayerId { get; }
 
+        // Store the symbol/game piece used by this player.
+        public string GamePiece { get; }
+
+
         public Player(int playerId)
         {
             PlayerId = playerId;

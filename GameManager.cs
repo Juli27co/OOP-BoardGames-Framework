@@ -38,7 +38,7 @@ namespace OOP_BoardGames_Framework
         {
             bool gameEnded = false;
             // Mock board and rules for demonstration
-            Board board = new Board();
+            Board board = rules.CreateGrid();
             GameRules rules = new ConnectFourRules(); // Replace with actual rules createst woth the factorey pattern
             while (!gameEnded)
             {
