@@ -44,13 +44,13 @@
                 Console.Clear();
                 int currentPlayerIndex = turnCounter % 2;
                 Player currentPlayer = players[currentPlayerIndex];
-                
+
                 // Display turn information header
                 Logger.PrintTurnHeader(Type, Mode, turnCounter + 1, currentPlayer);
-                
+
                 // Display the current board
                 DisplayCurrentBoard();
-                
+
                 // Request player action
                 string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
@@ -80,6 +80,13 @@
                     }
 
                     turnCounter = GameRecord.MovesLog.Count();
+                    continue;
+                }
+                else if (action == "help")
+                {
+                    Logger.ShowHelpMessage();
+                    Logger.WriteLine("Press Enter to continue...");
+                    Console.ReadLine();
                     continue;
                 }
 
@@ -271,16 +278,10 @@
                     parameters["rows"] = 3;
                     parameters["cols"] = 3;
                     break;
-                    
+
                 case GameType.Notakto:
                     parameters["rows"] = 3;
                     parameters["cols"] = 9;
-                    parameters["numberOfBoards"] = 3;
-                    break;
-
-                    // Fixed 3x3 with 3 boards for Notakto
-                    parameters["rows"] = 3;
-                    parameters["cols"] = 3;
                     parameters["numberOfBoards"] = 3;
                     break;
                 case GameType.ConnectFour:

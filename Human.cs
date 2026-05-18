@@ -7,40 +7,29 @@
         }
         public override string RequestAction(Board board, GameRules rules, int turn)// This method prompts the human player to enter their next action, reads the input, and validates it.
         {
-            while (true)
+            DisplayGameInstructions(rules);
+            string action = Logger.ReadLine() ?? "";
+            if (action == "save" || action == "redo" || action == "undo" || action == "help")
             {
-                DisplayGameInstructions(rules);
-                string action = Logger.ReadLine() ?? "";
-
-                if (action == "help")
-                {
-                    Logger.Clear();
-                    continue; // Loop back to redisplay board and instructions
-                }
-
-                if (action == "save" || action == "redo" || action == "undo")
+                return action;
+            }
+            PlayerMove move = new PlayerMove(action, this, turn);
+            try
+            {
+                bool valid = rules.ValidatePlayerMove(board, move);
+                if (valid)
                 {
                     return action;
                 }
-
-                PlayerMove move = new PlayerMove(action, this, turn);
-                try
+                else
                 {
-                    bool valid = rules.ValidatePlayerMove(board, move);
-                    if (valid)
-                    {
-                        return action;
-                    }
-                    else
-                    {
-                        throw new FormatException("Invalid move. Please try again.");
-                    }
+                    throw new FormatException("Invalid move. Please try again.");
                 }
-                catch (FormatException e)
-                {
-                    Logger.WriteLine(e.Message);
-                    continue; // Loop back to redisplay instructions
-                }
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine(e.Message);
+                return this.RequestAction(board, rules, turn);
             }
         }
 
