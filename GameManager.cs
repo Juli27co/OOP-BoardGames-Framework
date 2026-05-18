@@ -41,12 +41,17 @@
             bool gameEnded = false;
             while (!gameEnded)
             {
-                //TODO: Display the current game state here (board, scores, etc.)
-                DisplayCurrentBoard();
+                Console.Clear();
                 int currentPlayerIndex = turnCounter % 2;
                 Player currentPlayer = players[currentPlayerIndex];
-                Logger.WriteLine($"Turn {turnCounter + 1}: Player {currentPlayer.PlayerId}'s move.");
-                // Execute the player's action
+                
+                // Display turn information header
+                Logger.PrintTurnHeader(Type, Mode, turnCounter + 1, currentPlayer);
+                
+                // Display the current board
+                DisplayCurrentBoard();
+                
+                // Request player action
                 string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
 
@@ -98,10 +103,12 @@
                 {
                     turnCounter++;
                 }
+
             }
         }
         private void DisplayCurrentBoard()
         {
+            Logger.PrintBoardSectionStart();
             BoardDisplay boardDisplay = new BoardDisplay();
             if (Type == GameType.ConnectFour)
             {
@@ -111,7 +118,7 @@
             {
                 boardDisplay.ShowGomokuBoard(board!);
             }
-            if (Type == GameType.NumericalTicTacToe)
+            else if (Type == GameType.NumericalTicTacToe)
             {
                 boardDisplay.ShowNumericalTicTacToeBoard(board!);
             }
@@ -119,6 +126,7 @@
             {
                 boardDisplay.ShowCommonBoard(board!);
             }
+            Logger.PrintBoardSectionEnd();
         }
         private void Initialize()
         {
@@ -171,9 +179,9 @@
             gameState = new Game(board, rules);
 
 
-
             Logger.WriteLine($"\nGame initialized: {Type} - {Mode}");
             Logger.WriteLine($"Player 1: {players[0].GetType().Name}, Player 2: {players[1].GetType().Name}\n");
+            Logger.Clear();
         }
 
 
