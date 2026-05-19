@@ -11,6 +11,8 @@ namespace OOP_BoardGames_Framework
         public override int Rows => BoardSize;
         public override int WinLength => BoardSize;
 
+
+        // Checking valid moves
         public override bool ValidatePlayerMove(Board board, PlayerMove move)
         {
             if (!TryParseMove(move, out int boardIndex, out int column, out int row))
@@ -25,15 +27,17 @@ namespace OOP_BoardGames_Framework
             return board.IsCellEmpty(globalColumn, row);
         }
 
+        // Place x at the cell of the selected board
         public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
             if (!TryParseMove(move, out int boardIndex, out int column, out int row))
             {
-                throw new InvalidOperationException("Invalid Notakto move.");
+                throw new InvalidOperationException("Invalid move. Try again");
             }
             int globalColumn = ToGlobalColumn(boardIndex, column);
             board.AddElement(globalColumn, row, Piece);
         }
+
 
         public override bool CheckForWinning(Board board)
         {
@@ -47,6 +51,7 @@ namespace OOP_BoardGames_Framework
             return true;
         }
 
+        //There are no draws
         public override bool CheckForDraw(Board board)
         {
             return false;
@@ -62,6 +67,7 @@ namespace OOP_BoardGames_Framework
             return dead;
         }
 
+        // Check whether the board has a three-in-a-row of X.
         private bool IsBoardDead(Board board, int boardIndex)
         {
             int colOffset = boardIndex * BoardSize;
@@ -90,6 +96,7 @@ namespace OOP_BoardGames_Framework
             return false;
         }
 
+        // Return ture if all cells have X
         private bool IsLineComplete(Board board, int startCol, int startRow, int dc, int dr)
         {
             for (int i = 0; i < WinLength; i++)
@@ -101,6 +108,7 @@ namespace OOP_BoardGames_Framework
                 {
                     return false;
                 }
+
                 if (board.GetCell(col, row) != Piece)
                 {
                     return false;
@@ -114,6 +122,37 @@ namespace OOP_BoardGames_Framework
             return boardIndex * BoardSize + localColumn;
         }
 
+
+        //Return all valid moves
+        public override List<PlayerMove> GetValidMoves(Board board, Player player)
+        {
+            List<PlayerMove> moves = new List<PlayerMove>();
+            for (int boardNumber = 1; boardNumber <= NumberOfBoards; boardNumber++)
+            {
+                for (int position = 1; position <= BoardSize * BoardSize; position++)
+                {
+                    PlayerMove move = new PlayerMove(boardNumber + "," + position, player, 0);
+                    if (ValidatePlayerMove(board, move))
+                    {
+                        moves.Add(move);
+                    }
+                }
+            }
+            return moves;
+        }
+
+
+        //Remove the previously placed X
+        public override void UndoMove(Board board, PlayerMove move)
+        {
+            if (TryParseMove(move, out int boardIndex, out int column, out int row))
+            {
+                int globalColumn = ToGlobalColumn(boardIndex, column);
+                List<int[]> spots = new List<int[]>();
+                spots.Add(new int[] { globalColumn, row });
+                board.RemoveElements(spots, Piece);
+            }
+        }
         private bool TryParseMove(PlayerMove move, out int boardIndex, out int column, out int row)
         {
             boardIndex = 0;
