@@ -66,9 +66,13 @@
                 if (rules!.CheckForWinning(board!))
                 {
                     DisplayCurrentBoard();
-                    Logger.WriteLine($"Player {currentPlayer.PlayerId} wins!");
+                    if (Type == GameType.Notakto)
+                        Logger.WriteLine($"Player {currentPlayer.PlayerId} loses!");
+                    else
+                        Logger.WriteLine($"Player {currentPlayer.PlayerId} wins!");
                     gameEnded = true;
                 }
+                
                 else if (rules.CheckForDraw(board!))
                 {
                     DisplayCurrentBoard();
@@ -244,7 +248,7 @@
                     parameters["rows"] = 3;
                     parameters["cols"] = 3;
                     break;
-                    
+
                 case GameType.Notakto:
                     parameters["rows"] = 3;
                     parameters["cols"] = 9;
