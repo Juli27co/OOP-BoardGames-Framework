@@ -1,5 +1,4 @@
-﻿
-namespace OOP_BoardGames_Framework
+﻿namespace OOP_BoardGames_Framework
 {
     public class Player // The Player class represents a player in the Connect Four game.
     {

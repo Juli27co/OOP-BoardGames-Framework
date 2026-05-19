@@ -3,8 +3,8 @@ namespace OOP_BoardGames_Framework
     using System.Text.Json;
     public class FileManager
     {
-        private string saveDirectory = "savedFile/";
-        private string saveFileName = "savedGameFile";
+        public string SaveDirectory = "savedFile/";
+        public string SaveFileName = "savedGameFile";
         public void SaveGame(GameRecord game) // Save Game: it saves game record into json file and txt file.
         {
             Object savedData = new
@@ -15,10 +15,9 @@ namespace OOP_BoardGames_Framework
                 MovesLog = game.MovesLog
             };
             string jsonString = JsonSerializer.Serialize(savedData);
-            Directory.CreateDirectory(saveDirectory);
-            File.WriteAllText(saveDirectory + saveFileName + ".json", jsonString);
-            File.WriteAllText(saveDirectory + saveFileName + ".txt", jsonString);
-            Console.WriteLine("The game is saved successfully.");
+            Directory.CreateDirectory(SaveDirectory);
+            File.WriteAllText(SaveDirectory + SaveFileName + ".json", jsonString);
+            File.WriteAllText(SaveDirectory + SaveFileName + ".txt", jsonString);
         }
         public GameRecord LoadGame() // Load Game: retrieve saved game data.
         {
@@ -29,7 +28,7 @@ namespace OOP_BoardGames_Framework
             }
             string? jsonStringRead = File.ReadAllText(filePath);
             GameRecord? loadedData = JsonSerializer.Deserialize<GameRecord>(jsonStringRead);
-            return loadedData;
+            return loadedData!;
         }
     }
 }

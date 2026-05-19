@@ -5,8 +5,8 @@ namespace OOP_BoardGames_Framework
         public GameType GameType { get; set; }
         public Board CurrentBoard { get; set; } = null!;
         public GameMode GameMode { get; set; }
-        public Stack<PlayerMove> movesLog { get; set; } = new Stack<PlayerMove>();
-        public Stack<PlayerMove> redoMoves { get; set; } = new Stack<PlayerMove>();
+        public Stack<PlayerMove> MovesLog { get; set; } = new Stack<PlayerMove>();
+        public Stack<PlayerMove> RedoMoves { get; set; } = new Stack<PlayerMove>();
         public GameRecord() { }
         public void UpdateGameState(Board board, GameType gameType, GameMode gameMode)
         {
@@ -19,17 +19,20 @@ namespace OOP_BoardGames_Framework
             MovesLog.Push(move);
             RedoMoves.Clear();
         }
-        public PlayerMove UndoMove()
+        public void UndoMove()
         {
+            if (MovesLog.Count == 0)
+            {
+                Logger.WriteLine("There are no moves to undo.");
+                return;
+            }
             PlayerMove removedMove = MovesLog.Pop();
             RedoMoves.Push(removedMove);
-            return MovesLog.Peek();
         }
-        public PlayerMove RedoMove()
+        public void RedoMove()
         {
             PlayerMove redoMove = RedoMoves.Pop();
             MovesLog.Push(redoMove);
-            return MovesLog.Peek();
         }
     }
 }

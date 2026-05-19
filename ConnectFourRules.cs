@@ -37,6 +37,36 @@ namespace OOP_BoardGames_Framework
             }
             throw new InvalidOperationException("Column is full.");
         }
+        public override List<PlayerMove> GetValidMoves(Board board, Player player) // find all moves the player can play for AI testing
+        {
+            List<PlayerMove> moves = new List<PlayerMove>();
+            for (int column = 1; column <= Columns; column++)
+            {
+                PlayerMove move = new PlayerMove(column.ToString(), player, 0);
+                if (ValidatePlayerMove(board, move))
+                {
+                    moves.Add(move);
+                }
+            }
+            return moves;
+        }
+        public override void UndoMove(Board board, PlayerMove move) // undo the AI test move
+        {
+            if (!TryParseMove(move, out int column))
+            {
+                return;
+            }
+            for (int row = 0; row < Rows; row++)
+            {
+                if (!board.IsCellEmpty(column, row))
+                {
+                    List<int[]> spots = new List<int[]>();
+                    spots.Add(new int[] { column, row });
+                    board.RemoveElements(spots, move.Player.GamePiece);
+                    return;
+                }
+            }
+        }
         private bool TryParseMove(PlayerMove move, out int column)
         {
             column = 0;
