@@ -30,6 +30,7 @@ namespace OOP_BoardGames_Framework
             int globalColumn = ToGlobalColumn(boardIndex, column);
             board.AddElement(globalColumn, row, Piece);
         }
+
         public override bool CheckForWinning(Board board)
         {
             for (int b = 0; b < NumberOfBoards; b++)
@@ -41,6 +42,7 @@ namespace OOP_BoardGames_Framework
             }
             return true;
         }
+
         public override bool CheckForDraw(Board board)
         {
             return false;

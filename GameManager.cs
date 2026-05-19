@@ -101,6 +101,7 @@
                     }
                     gameEnded = true;
                 }
+                
                 else if (rules.CheckForDraw(board!))
                 {
                     DisplayCurrentBoard();
