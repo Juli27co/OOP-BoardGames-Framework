@@ -59,8 +59,43 @@
                     break;
                 }
 
+                else if (action == "undo")
+                {
+                    if (GameRecord.MovesLog.Count == 0)
+                    {
+                        Logger.WriteLine("Error! try again");
+                        continue;
+                    }
+                    GameRecord.UndoMove();
+                    board!.Clear();
+                    foreach (PlayerMove pastMove in GameRecord.MovesLog.Reverse())
+                    {
+                        gameState!.ExecutePlayerAction(pastMove);
+                    }
+                    turnCounter = GameRecord.MovesLog.Count;
+                    continue;
+                }
+
+                else if (action == "redo")
+                {
+                    if (GameRecord.RedoMoves.Count == 0)
+                    {
+                        Logger.WriteLine("Error! try again");
+                        continue;
+                    }
+                    GameRecord.RedoMove();
+                    board!.Clear();
+                    foreach (PlayerMove pastMove in GameRecord.MovesLog.Reverse())
+                    {
+                        gameState!.ExecutePlayerAction(pastMove);
+                    }
+                    turnCounter = GameRecord.MovesLog.Count;
+                    continue;
+                    
+                }
+
                 // Put disc in board
-                PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);
+                    PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);
                 gameState!.ExecutePlayerAction(move);
                 GameRecord.LogMove(move);
                 if (rules!.CheckForWinning(board!))
@@ -255,11 +290,6 @@
                     parameters["numberOfBoards"] = 3;
                     break;
 
-                    // Fixed 3x3 with 3 boards for Notakto
-                    parameters["rows"] = 3;
-                    parameters["cols"] = 3;
-                    parameters["numberOfBoards"] = 3;
-                    break;
                 case GameType.ConnectFour:
                     // Standard Connect Four board is 6 rows x 7 columns
                     parameters["rows"] = 6;
