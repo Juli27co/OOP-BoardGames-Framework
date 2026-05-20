@@ -14,6 +14,7 @@
         public GameMode Mode { get; private set; }
         public GameType Type { get; private set; }
         public GameRecord GameRecord { get; private set; }
+        private Dictionary<string, int> gameParameters;
         private FileManager fileManager;
         public GameManager()
         {
@@ -43,10 +44,19 @@
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
                 if (action == "save")
                 {
-                    GameRecord.UpdateGameState(board!, Type, Mode);
-                    fileManager.SaveGame(GameRecord);
-                    Logger.WriteLine($"Your game will be saved and you'll exit the game.");
-                    break;
+                    Logger.PrintHeader("SELECT SAVE FORMAT");
+                    Logger.PrintOption(1, "Save as txt file");
+                    Logger.PrintOption(2, "Save as json file");
+                    int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
+                    GameRecord.UpdateGameState(board!, Type, Mode, gameParameters);
+                    fileManager.SaveGame(GameRecord, selection);
+
+                    Logger.PrintHeader("CONTINUE CURRENT GAME?");
+                    Logger.PrintOption(1, "Yes");
+                    Logger.PrintOption(2, "No");
+                    int gameContinue = Logger.ReadInt("Enter your choice (1-2): ", 1, 2);
+                    if (gameContinue == 1) continue;
+                    if (gameContinue == 2) break;
                 }
                 else if (action == "undo" || action == "redo")
                 {
@@ -101,7 +111,7 @@
                     }
                     gameEnded = true;
                 }
-                
+
                 else if (rules.CheckForDraw(board!))
                 {
                     DisplayCurrentBoard();
@@ -142,24 +152,44 @@
         {
             GameType selectedGameType;
             GameMode selectedGameMode;
-            bool isNewGame = SelectStartOption() == 1;// Select new game or load game
-            if (isNewGame)
+            bool isNewGame;
+
+            while (true) // Return to the menu if loading fails.
             {
-                selectedGameType = SelectGameType();// Select game type & game mode
-                Type = selectedGameType;
-                selectedGameMode = SelectGameMode();
-                Mode = selectedGameMode;
+                isNewGame = SelectStartOption() == 1;// Select new game or load game
+                if (isNewGame)
+                {
+                    selectedGameType = SelectGameType();// Select game type & game mode
+                    Type = selectedGameType;
+                    selectedGameMode = SelectGameMode();
+                    Mode = selectedGameMode;
+                    gameParameters = GetAdditionalGameParameters(selectedGameType);
+                }
+                else
+                {
+                    Logger.PrintHeader("SELECT LOAD FORMAT");
+                    Logger.PrintOption(1, "Load from txt file");
+                    Logger.PrintOption(2, "Load from json file");
+                    int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
+                    FileManager fileManager = new FileManager();
+                    try
+                    {
+                        GameRecord = fileManager.LoadGame(selection);// Restore game type & game mode
+                        Type = GameRecord.GameType;
+                        selectedGameType = GameRecord.GameType;
+                        Mode = GameRecord.GameMode;
+                        selectedGameMode = GameRecord.GameMode;
+                        gameParameters = GameRecord.GameParameters;
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        Logger.WriteLine(ex.Message);
+                        continue;
+                    }
+
+                }
+                break;
             }
-            else
-            {
-                FileManager fileManager = new FileManager();
-                GameRecord = fileManager.LoadGame();// Restore game type & game mode
-                Type = GameRecord.GameType;
-                selectedGameType = GameRecord.GameType;
-                Mode = GameRecord.GameMode;
-                selectedGameMode = GameRecord.GameMode;
-            }
-            Dictionary<string, object> gameParameters = GetAdditionalGameParameters(selectedGameType);// Get any game-specific parameters (extensible for future iterations)
             int gridSize = gameParameters.ContainsKey("gridSize") ? (int)gameParameters["gridSize"] : 3;
             rules = GameRulesFactory.CreateGameRules(selectedGameType, gridSize);
             players = CreatePlayers(selectedGameMode);// Create players based on selected mode
@@ -186,7 +216,8 @@
         }
         private int SelectStartOption()
         {
-            if (!File.Exists(fileManager.SaveDirectory + fileManager.SaveFileName + ".json"))
+            // Check if saved game folder exists. If not, only allow starting a new game (Option 1).
+            if (!Directory.Exists(fileManager.SaveDirectory))
             {
                 return 1;
             }
@@ -194,7 +225,7 @@
             {
                 Logger.PrintHeader("SELECT AN OPTION");
                 Logger.PrintOption(1, "Start New Game");
-                Logger.PrintOption(2, "Continue Saved Game");
+                Logger.PrintOption(2, "Load Saved Game");
                 int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
                 return selection;
             }
@@ -259,9 +290,9 @@
             }
             throw new ArgumentException("Unknown game mode.");
         }
-        private Dictionary<string, object> GetAdditionalGameParameters(GameType gameType)
+        private Dictionary<string, int> GetAdditionalGameParameters(GameType gameType)
         {
-            Dictionary<string, object> parameters = new Dictionary<string, object>();// Collect board size (rows/cols) according to game-specific rules
+            Dictionary<string, int> parameters = new Dictionary<string, int>();// Collect board size (rows/cols) according to game-specific rules
             switch (gameType)
             {
                 case GameType.TicTacToe:

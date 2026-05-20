@@ -8,7 +8,7 @@ class Program
         {
             GameManager gameManager = new GameManager();
             gameManager.Run();
-            Logger.PrintHeader("Game Over");
+            Logger.PrintHeader("GAME ENDED");
             Logger.PrintOption(1, "Start New Game");
             Logger.PrintOption(2, "Exit");
             int selection = Logger.ReadInt("Enter your choice (1-2): ", 1, 2);
