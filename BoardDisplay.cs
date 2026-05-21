@@ -92,7 +92,25 @@
             {
                 for (int column = 0; column < board.GetColumnCount(); column++)
                 {
-                    Console.Write("| " + board.GetCell(column, row) + " ");
+                    Console.Write("| ");
+                    string cell =board.GetCell(column, row);
+                    if (cell == "X")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write(cell);
+                        Console.ResetColor();
+                    }
+                    else if (cell == "O")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(cell);
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.Write(cell);
+                    }
+                    Console.Write(" ");
                 }
                 Console.WriteLine("|");
             }
