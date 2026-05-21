@@ -93,7 +93,7 @@
                     {
                         int otherPlayerIndex = (currentPlayerIndex + 1) % 2;
                         Player winner = players[otherPlayerIndex];
-                        Logger.WriteLine($"Player {winner.PlayerId} loses!");
+                        Logger.WriteLine($"Player {winner.PlayerId} wins!!");
                     }
                     else
                     {
