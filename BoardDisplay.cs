@@ -23,7 +23,7 @@
         {
             PrintGomokuBoard(board);
         }
-        private void PrintGridBoard(Board board, bool showPositionNumbers) //for games using a basic grid layout (e.g. Tic-Tac-Toe, Numerical Tic-Tac-Toe)
+        private void PrintGridBoard(Board board, bool showPositionNumbers) //for games using a basic grid layout
         {
             int cellWidth;
             if (showPositionNumbers)
@@ -34,27 +34,36 @@
             {
                 cellWidth = 3;
             }
+
             for (int row = 0; row < board.GetRowCount(); row++)
             {
                 for (int column = 0; column < board.GetColumnCount(); column++)
                 {
                     string cell = board.GetCell(column, row);
+
                     if (showPositionNumbers && string.IsNullOrWhiteSpace(cell))
                     {
                         int position = (row * board.GetColumnCount()) + column + 1;
                         cell = "(" + position + ")";
+
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write(cell.PadLeft(cellWidth));
+                        Console.ResetColor();
                     }
                     else
                     {
                         cell = " " + cell + " ";
+                        Console.Write(cell.PadLeft(cellWidth));
                     }
-                    Console.Write(cell.PadLeft(cellWidth));
+
                     if (column < board.GetColumnCount() - 1)
                     {
                         Console.Write("|");
                     }
                 }
+
                 Console.WriteLine();
+
                 if (row < board.GetRowCount() - 1)
                 {
                     PrintRowLine(board.GetColumnCount(), cellWidth);

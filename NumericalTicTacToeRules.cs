@@ -69,9 +69,7 @@ namespace OOP_BoardGames_Framework
         {
             if (TryParseMove(move, out int column, out int row, out int number))
             {
-                List<int[]> spots = new List<int[]>();
-                spots.Add(new int[] { column, row });
-                board.RemoveElements(spots, number.ToString());
+                RemovePiece(board, column, row, number.ToString());
             }
         }
         private bool TryParseMove(PlayerMove move, out int column, out int row, out int number) //Convert mentioned above into useable numbers

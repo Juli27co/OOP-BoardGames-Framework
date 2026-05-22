@@ -45,9 +45,7 @@ namespace OOP_BoardGames_Framework
         {
             if (TryParseMove(move, out int column, out int row))
             {
-                List<int[]> spots = new List<int[]>();
-                spots.Add(new int[] { column, row });
-                board.RemoveElements(spots, move.Player.GamePiece);
+                RemovePiece(board, column, row, move.Player.GamePiece);
             }
         }
         private bool TryParseMove(PlayerMove move, out int column, out int row)

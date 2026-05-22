@@ -148,9 +148,7 @@ namespace OOP_BoardGames_Framework
             if (TryParseMove(move, out int boardIndex, out int column, out int row))
             {
                 int globalColumn = ToGlobalColumn(boardIndex, column);
-                List<int[]> spots = new List<int[]>();
-                spots.Add(new int[] { globalColumn, row });
-                board.RemoveElements(spots, Piece);
+                RemovePiece(board, globalColumn, row, Piece);
             }
         }
         private bool TryParseMove(PlayerMove move, out int boardIndex, out int column, out int row)
