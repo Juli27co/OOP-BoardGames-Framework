@@ -62,12 +62,12 @@
             }
         }
 
-        public void ShowNotaktoBoard(Board board)
+        public void PrintNotaktoBoard(Board board)
         {
             int boardSize = 3;
             for (int b = 0; b < 3; b++)
             {
-                Console.Write($"    Board {b + 1}    ");
+                Console.Write($"   Board {b + 1}         ");
             }
             Console.WriteLine();
 
@@ -78,7 +78,14 @@
                     int colOffset = b * boardSize;
                     for (int col = 0; col < boardSize; col++)
                     {
-                        Console.Write(" " + board.GetCell(colOffset + col, row) + " ");
+                        string cell = board.GetCell(colOffset + col, row);
+
+                        if (string.IsNullOrWhiteSpace(cell))
+                        {
+                            cell = " ";
+                        }
+
+                        Console.Write(" " + cell + " ");
                         if (col < boardSize - 1)
                         {
                             Console.Write("|");
@@ -92,39 +99,15 @@
                 {
                     for (int b = 0; b < 3; b++)
                     {
-                        Console.Write("------------");
-                        Console.Write("     ");
+                        Console.Write("-----------");
+                        Console.Write("         ");
                     }
                     Console.WriteLine();
                 }
             }
             Console.WriteLine();
         }
-        private void PrintCommonBoard(Board board) //for games using a basic grid layout (e.g. Tic-Tac-Toe, Numerical Tic-Tac-Toe, Notakto)
-        {
-            for (int row = 0; row < board.GetRowCount(); row++)
-            {
-                for (int column = 0; column < board.GetColumnCount(); column++)
-                {
-                    Console.Write(" " + board.GetCell(column, row) + " ");
-                    bool isEndOfSmallBoard = (column + 1) % 3 == 0;
-                    bool isLastColumn = column == board.GetColumnCount() - 1;
-                    if (!isEndOfSmallBoard && !isLastColumn)
-                    {
-                        Console.Write("|");
-                    }
-                    else if (isEndOfSmallBoard && !isLastColumn)
-                    {
-                        Console.Write("     ");
-                    }
-                }
-                Console.WriteLine();
-                if (row < board.GetRowCount() - 1)
-                {
-                    PrintNotaktoRowLine(board.GetColumnCount());
-                }
-            }
-        }
+
         private void PrintConnectFourBoard(Board board)
         {
             for (int row = 0; row < board.GetRowCount(); row++)
@@ -132,7 +115,7 @@
                 for (int column = 0; column < board.GetColumnCount(); column++)
                 {
                     Console.Write("| ");
-                    string cell =board.GetCell(column, row);
+                    string cell = board.GetCell(column, row);
                     if (cell == "X")
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
