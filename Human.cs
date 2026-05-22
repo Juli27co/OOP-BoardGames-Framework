@@ -22,6 +22,10 @@
             else if (rules is TicTacToeRules)
             {
                 Logger.WriteLine($"Player #{this.PlayerId}: Enter a number from 1 to 9.");
+                Logger.WriteLine("  Board  ");
+                Logger.WriteLine("  1 2 3  ");
+                Logger.WriteLine("  4 5 6  ");
+                Logger.WriteLine("  7 8 9  ");
             }
             else if (rules is ConnectFourRules)
             {
@@ -63,12 +67,6 @@
                 Console.WriteLine(e.Message);
                 return this.RequestAction(board, rules, turn);
             }
-        }
-        private void DisplayGameInstructions(GameRules rules)
-        {
-            Logger.PrintInstructionsSection(
-                ($"Player #{PlayerId}: enter a move, or type save, undo, redo, help.", Logger.InstructionLevel.Main)
-            );
         }
     }
 }
