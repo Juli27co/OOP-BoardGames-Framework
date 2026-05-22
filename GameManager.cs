@@ -66,7 +66,8 @@
                     {
                         if (GameRecord.MovesLog.Count() == 0)
                         {
-                            Logger.WriteLine("There are no previous turns available. Please try again.");
+                            Logger.WriteLine("There are no previous turns available. Press Enter to try again.");
+                            Console.ReadLine();
                             continue;
                         }
                         GameRecord.UndoMove();
@@ -75,7 +76,8 @@
                     {
                         if (GameRecord.RedoMoves.Count() == 0)
                         {
-                            Logger.WriteLine("There are no turns available to redo. Please try again.");
+                            Logger.WriteLine("There are no turns available to redo. Press Enter to try again.");
+                            Console.ReadLine();
                             continue;
                         }
                         GameRecord.RedoMove();
