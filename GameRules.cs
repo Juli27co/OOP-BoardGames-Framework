@@ -33,5 +33,15 @@ namespace OOP_BoardGames_Framework
             return board.IsBoardFull();
         }
 
+
+        public virtual List<PlayerMove> GetValidMoves(Board board, Player player)
+        {
+            return new List<PlayerMove>();
+        }
+        public virtual void UndoMove(Board board, PlayerMove move)
+        { 
+
+        }
+
     }
 } 

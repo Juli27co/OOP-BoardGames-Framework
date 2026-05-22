@@ -61,7 +61,46 @@
                 }
             }
         }
-        private void PrintNotaktoBoard(Board board)
+
+        public void ShowNotaktoBoard(Board board)
+        {
+            int boardSize = 3;
+            for (int b = 0; b < 3; b++)
+            {
+                Console.Write($"    Board {b + 1}    ");
+            }
+            Console.WriteLine();
+
+            for (int row = 0; row < boardSize; row++)
+            {
+                for (int b = 0; b < 3; b++)
+                {
+                    int colOffset = b * boardSize;
+                    for (int col = 0; col < boardSize; col++)
+                    {
+                        Console.Write(" " + board.GetCell(colOffset + col, row) + " ");
+                        if (col < boardSize - 1)
+                        {
+                            Console.Write("|");
+                        }
+                    }
+                    Console.Write("         ");
+                }
+                Console.WriteLine();
+
+                if (row < boardSize - 1)
+                {
+                    for (int b = 0; b < 3; b++)
+                    {
+                        Console.Write("------------");
+                        Console.Write("     ");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine();
+        }
+        private void PrintCommonBoard(Board board) //for games using a basic grid layout (e.g. Tic-Tac-Toe, Numerical Tic-Tac-Toe, Notakto)
         {
             for (int row = 0; row < board.GetRowCount(); row++)
             {

@@ -99,19 +99,13 @@
                 if (rules!.CheckForWinning(board!))
                 {
                     DisplayCurrentBoard();
-                    if (Type == GameType.Notakto)// for Notakto checking win
-                    {
-                        int otherPlayerIndex = (currentPlayerIndex + 1) % 2;
-                        Player winner = players[otherPlayerIndex];
-                        Logger.WriteLine($"Player {winner.PlayerId} wins!!");
-                    }
-                    else
-                    {
+                    if (Type == GameType.Notakto)
                         Logger.WriteLine($"Player {currentPlayer.PlayerId} loses!");
-                    }
+                    else
+                        Logger.WriteLine($"Player {currentPlayer.PlayerId} wins!");
                     gameEnded = true;
                 }
-
+                
                 else if (rules.CheckForDraw(board!))
                 {
                     DisplayCurrentBoard();
@@ -296,6 +290,17 @@
             switch (gameType)
             {
                 case GameType.TicTacToe:
+                    parameters["rows"] = 3;
+                    parameters["cols"] = 3;
+                    break;
+
+                case GameType.Notakto:
+                    parameters["rows"] = 3;
+                    parameters["cols"] = 9;
+                    parameters["numberOfBoards"] = 3;
+                    break;
+
+                    // Fixed 3x3 with 3 boards for Notakto
                     parameters["rows"] = 3;
                     parameters["cols"] = 3;
                     break;
