@@ -41,9 +41,9 @@
                 Logger.WriteLine($"Player #{this.PlayerId}: Type your next action.");
             }
             string action = Logger.ReadLine() ?? "";
-            if (action == "save")
+            if (action == "save" || action == "redo" || action == "undo" || action == "help")
             {
-              return action;
+                return action;
             }
             PlayerMove move = new PlayerMove(action, this, turn);
             try
@@ -63,7 +63,12 @@
                 Console.WriteLine(e.Message);
                 return this.RequestAction(board, rules, turn);
             }
-
+        }
+        private void DisplayGameInstructions(GameRules rules)
+        {
+            Logger.PrintInstructionsSection(
+                ($"Player #{PlayerId}: enter a move, or type save, undo, redo, help.", Logger.InstructionLevel.Main)
+            );
         }
     }
 }

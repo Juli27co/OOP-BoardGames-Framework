@@ -4,7 +4,15 @@
     {
         public void ShowCommonBoard(Board board)
         {
-            PrintCommonBoard(board);
+            PrintGridBoard(board, false);
+        }
+        public void ShowNumericalTicTacToeBoard(Board board)
+        {
+            PrintGridBoard(board, true);
+        }
+        public void ShowNotaktoBoard(Board board)
+        {
+            PrintNotaktoBoard(board);
         }
         public void ShowConnectFourBoard(Board board)
         {
@@ -13,11 +21,45 @@
         }
         public void ShowGomokuBoard(Board board)
         {
-            PrintNumberBoard(board);
+            PrintGomokuBoard(board);
         }
-        public void ShowNumericalTicTacToeBoard(Board board)
+        private void PrintGridBoard(Board board, bool showPositionNumbers) //for games using a basic grid layout (e.g. Tic-Tac-Toe, Numerical Tic-Tac-Toe)
         {
-            PrintNumericalTicTacToeBoard(board);
+            int cellWidth;
+            if (showPositionNumbers)
+            {
+                cellWidth = 5;
+            }
+            else
+            {
+                cellWidth = 3;
+            }
+            for (int row = 0; row < board.GetRowCount(); row++)
+            {
+                for (int column = 0; column < board.GetColumnCount(); column++)
+                {
+                    string cell = board.GetCell(column, row);
+                    if (showPositionNumbers && string.IsNullOrWhiteSpace(cell))
+                    {
+                        int position = (row * board.GetColumnCount()) + column + 1;
+                        cell = "(" + position + ")";
+                    }
+                    else
+                    {
+                        cell = " " + cell + " ";
+                    }
+                    Console.Write(cell.PadLeft(cellWidth));
+                    if (column < board.GetColumnCount() - 1)
+                    {
+                        Console.Write("|");
+                    }
+                }
+                Console.WriteLine();
+                if (row < board.GetRowCount() - 1)
+                {
+                    PrintRowLine(board.GetColumnCount(), cellWidth);
+                }
+            }
         }
 
         public void ShowNotaktoBoard(Board board)
@@ -65,15 +107,21 @@
                 for (int column = 0; column < board.GetColumnCount(); column++)
                 {
                     Console.Write(" " + board.GetCell(column, row) + " ");
-                    if (column < board.GetColumnCount() - 1)
+                    bool isEndOfSmallBoard = (column + 1) % 3 == 0;
+                    bool isLastColumn = column == board.GetColumnCount() - 1;
+                    if (!isEndOfSmallBoard && !isLastColumn)
                     {
                         Console.Write("|");
+                    }
+                    else if (isEndOfSmallBoard && !isLastColumn)
+                    {
+                        Console.Write("     ");
                     }
                 }
                 Console.WriteLine();
                 if (row < board.GetRowCount() - 1)
                 {
-                    PrintRowLine(board.GetColumnCount());
+                    PrintNotaktoRowLine(board.GetColumnCount());
                 }
             }
         }
@@ -83,17 +131,36 @@
             {
                 for (int column = 0; column < board.GetColumnCount(); column++)
                 {
-                    Console.Write("| " + board.GetCell(column, row) + " ");
+                    Console.Write("| ");
+                    string cell =board.GetCell(column, row);
+                    if (cell == "X")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write(cell);
+                        Console.ResetColor();
+                    }
+                    else if (cell == "O")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(cell);
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.Write(cell);
+                    }
+                    Console.Write(" ");
                 }
                 Console.WriteLine("|");
             }
         }
-        private void PrintNumberBoard(Board board) //display Gomoku board with row and column numbers.
+        private void PrintGomokuBoard(Board board)
         {
             Console.Write("   ");
             for (int column = 0; column < board.GetColumnCount(); column++)
             {
-                Console.Write((column + 1).ToString().PadLeft(3));
+                char columnLetter = (char)('A' + column);
+                Console.Write(columnLetter.ToString().PadLeft(3));
             }
             Console.WriteLine();
             for (int row = 0; row < board.GetRowCount(); row++)
@@ -101,38 +168,14 @@
                 Console.Write((row + 1).ToString().PadLeft(2) + " ");
                 for (int column = 0; column < board.GetColumnCount(); column++)
                 {
-                    Console.Write(board.GetCell(column, row).PadLeft(3));
-                }
-                Console.WriteLine();
-            }
-        }
-        private void PrintNumericalTicTacToeBoard(Board board)
-        {
-            for (int row = 0; row < board.GetRowCount(); row++)
-            {
-                for (int column = 0; column < board.GetColumnCount(); column++)
-                {
                     string cell = board.GetCell(column, row);
                     if (string.IsNullOrWhiteSpace(cell))
                     {
-                        int position = (row * board.GetColumnCount()) + column + 1;
-                        cell = $"({position})";
+                        cell = ".";
                     }
-                    else
-                    {
-                        cell = $" {cell} ";
-                    }
-                    Console.Write(cell.PadLeft(4).PadRight(5));
-                    if (column < board.GetColumnCount() - 1)
-                    {
-                        Console.Write("|");
-                    }
+                    Console.Write(cell.PadLeft(3));
                 }
                 Console.WriteLine();
-                if (row < board.GetRowCount() - 1)
-                {
-                    PrintWideRowLine(board.GetColumnCount());
-                }
             }
         }
         private void PrintColumnHeader(int columns)
@@ -143,11 +186,11 @@
             }
             Console.WriteLine();
         }
-        private void PrintRowLine(int columns)
+        private void PrintRowLine(int columns, int cellWidth)
         {
             for (int column = 0; column < columns; column++)
             {
-                Console.Write("---");
+                Console.Write(new string('-', cellWidth));
                 if (column < columns - 1)
                 {
                     Console.Write("+");
@@ -155,14 +198,20 @@
             }
             Console.WriteLine();
         }
-        private void PrintWideRowLine(int columns)
+        private void PrintNotaktoRowLine(int columns)
         {
             for (int column = 0; column < columns; column++)
             {
-                Console.Write("-----");
-                if (column < columns - 1)
+                Console.Write("---");
+                bool isEndOfSmallBoard = (column + 1) % 3 == 0;
+                bool isLastColumn = column == columns - 1;
+                if (!isEndOfSmallBoard && !isLastColumn)
                 {
                     Console.Write("+");
+                }
+                else if (isEndOfSmallBoard && !isLastColumn)
+                {
+                    Console.Write("     ");
                 }
             }
             Console.WriteLine();

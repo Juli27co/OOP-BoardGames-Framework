@@ -48,6 +48,32 @@ namespace OOP_BoardGames_Framework
                 throw new InvalidOperationException("That space is already taken.");
             }
         }
+        public override List<PlayerMove> GetValidMoves(Board board, Player player) // find all moves the player can play for AI testing
+        {
+            List<PlayerMove> moves = new List<PlayerMove>();
+            int max = Rows * Columns;
+            for (int position = 1; position <= max; position++)
+            {
+                for (int number = 1; number <= max; number++)
+                {
+                    PlayerMove move = new PlayerMove(position + "," + number, player, 0);
+                    if (ValidatePlayerMove(board, move))
+                    {
+                        moves.Add(move);
+                    }
+                }
+            }
+            return moves;
+        }
+        public override void UndoMove(Board board, PlayerMove move) // undo the AI test move
+        {
+            if (TryParseMove(move, out int column, out int row, out int number))
+            {
+                List<int[]> spots = new List<int[]>();
+                spots.Add(new int[] { column, row });
+                board.RemoveElements(spots, number.ToString());
+            }
+        }
         private bool TryParseMove(PlayerMove move, out int column, out int row, out int number) //Convert mentioned above into useable numbers
         {
             column = row = number = 0; //Prevent a crash if return false

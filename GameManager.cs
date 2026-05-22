@@ -11,23 +11,11 @@
         private Board? board;
         private GameRules? rules;
         private Game? gameState;
-
         public GameMode Mode { get; private set; }
         public GameType Type { get; private set; }
-
         public GameRecord GameRecord { get; private set; }
-
+        private Dictionary<string, int> gameParameters;
         private FileManager fileManager;
-
-        public GameManager(GameMode mode, GameType type, Player player1, Player player2)
-        {
-            Mode = mode;
-            Type = type;
-            players = new List<Player> { player1, player2 };
-            turnCounter = 0;
-            GameRecord = new GameRecord();
-            fileManager = new FileManager();
-        }
         public GameManager()
         {
             players = new List<Player>();
@@ -41,26 +29,71 @@
             bool gameEnded = false;
             while (!gameEnded)
             {
-                //TODO: Display the current game state here (board, scores, etc.)
-                DisplayCurrentBoard();
+                Console.Clear();
                 int currentPlayerIndex = turnCounter % 2;
                 Player currentPlayer = players[currentPlayerIndex];
-                Logger.WriteLine($"Turn {turnCounter + 1}: Player {currentPlayer.PlayerId}'s move.");
-                // Execute the player's action
-                string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);
+                Logger.PrintTurnHeader(Type, Mode, turnCounter + 1, currentPlayer);// Display turn information header
+                DisplayCurrentBoard();// Display the current board
+                string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);// Request player action
+                if (string.IsNullOrWhiteSpace(action))
+                {
+                    Logger.WriteLine("No valid move found.");
+                    gameEnded = true;
+                    continue;
+                }
                 Logger.WriteLine($"Player {currentPlayer.PlayerId} action: {action}");
-
                 if (action == "save")
                 {
-                    GameRecord.UpdateGameState(board, Type, Mode);
-                    fileManager.SaveGame(GameRecord);
-                    Logger.WriteLine($"Your game will be saved and you'll exit the game.");
-                    gameEnded = true;
-                    break;
-                }
+                    Logger.PrintHeader("SELECT SAVE FORMAT");
+                    Logger.PrintOption(1, "Save as txt file");
+                    Logger.PrintOption(2, "Save as json file");
+                    int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
+                    GameRecord.UpdateGameState(board!, Type, Mode, gameParameters);
+                    fileManager.SaveGame(GameRecord, selection);
 
-                // Put disc in board
-                PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);
+                    Logger.PrintHeader("CONTINUE CURRENT GAME?");
+                    Logger.PrintOption(1, "Yes");
+                    Logger.PrintOption(2, "No");
+                    int gameContinue = Logger.ReadInt("Enter your choice (1-2): ", 1, 2);
+                    if (gameContinue == 1) continue;
+                    if (gameContinue == 2) break;
+                }
+                else if (action == "undo" || action == "redo")
+                {
+                    if (action == "undo")
+                    {
+                        if (GameRecord.MovesLog.Count() == 0)
+                        {
+                            Logger.WriteLine("There are no previous turns available. Please try again.");
+                            continue;
+                        }
+                        GameRecord.UndoMove();
+                    }
+                    else
+                    {
+                        if (GameRecord.RedoMoves.Count() == 0)
+                        {
+                            Logger.WriteLine("There are no turns available to redo. Please try again.");
+                            continue;
+                        }
+                        GameRecord.RedoMove();
+                    }
+                    board!.Clear();
+                    foreach (PlayerMove restoreMove in GameRecord.MovesLog.Reverse())
+                    {
+                        gameState!.ExecutePlayerAction(restoreMove);
+                    }
+                    turnCounter = GameRecord.MovesLog.Count();
+                    continue;
+                }
+                else if (action == "help")
+                {
+                    Logger.ShowHelpMessage();
+                    Logger.WriteLine("Press Enter to continue...");
+                    Console.ReadLine();
+                    continue;
+                }
+                PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);// Put disc in board
                 gameState!.ExecutePlayerAction(move);
                 GameRecord.LogMove(move);
                 if (rules!.CheckForWinning(board!))
@@ -96,9 +129,13 @@
             {
                 boardDisplay.ShowGomokuBoard(board!);
             }
-            if (Type == GameType.NumericalTicTacToe)
+            else if (Type == GameType.NumericalTicTacToe)
             {
                 boardDisplay.ShowNumericalTicTacToeBoard(board!);
+            }
+            else if (Type == GameType.Notakto)
+            {
+                boardDisplay.ShowNotaktoBoard(board!);
             }
             else
             {
@@ -109,41 +146,54 @@
         {
             GameType selectedGameType;
             GameMode selectedGameMode;
-            // Select new game or load game
-            bool isNewGame = SelectStartOption() == 1;
-            if (isNewGame)
-            {
-                // Select game type & game mode
-                selectedGameType = SelectGameType();
-                Type = selectedGameType;
-                selectedGameMode = SelectGameMode();
-                Mode = selectedGameMode;
-            }
-            else
-            {
-                FileManager fileManager = new FileManager();
-                GameRecord = fileManager.LoadGame();
-                // Restore game type & game mode
-                Type = GameRecord.GameType;
-                selectedGameType = GameRecord.GameType;
-                Mode = GameRecord.GameMode;
-                selectedGameMode = GameRecord.GameMode;
-            }
+            bool isNewGame;
 
-            // Get any game-specific parameters (extensible for future iterations)
-            Dictionary<string, object> gameParameters = GetAdditionalGameParameters(selectedGameType);
-            rules = GameRulesFactory.CreateGameRules(selectedGameType);
-            // Create players based on selected mode
-            players = CreatePlayers(selectedGameMode);
-            // Initialize board and rules based on selected game
-            int rows = 3;
+            while (true) // Return to the menu if loading fails.
+            {
+                isNewGame = SelectStartOption() == 1;// Select new game or load game
+                if (isNewGame)
+                {
+                    selectedGameType = SelectGameType();// Select game type & game mode
+                    Type = selectedGameType;
+                    selectedGameMode = SelectGameMode();
+                    Mode = selectedGameMode;
+                    gameParameters = GetAdditionalGameParameters(selectedGameType);
+                }
+                else
+                {
+                    Logger.PrintHeader("SELECT LOAD FORMAT");
+                    Logger.PrintOption(1, "Load from txt file");
+                    Logger.PrintOption(2, "Load from json file");
+                    int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
+                    FileManager fileManager = new FileManager();
+                    try
+                    {
+                        GameRecord = fileManager.LoadGame(selection);// Restore game type & game mode
+                        Type = GameRecord.GameType;
+                        selectedGameType = GameRecord.GameType;
+                        Mode = GameRecord.GameMode;
+                        selectedGameMode = GameRecord.GameMode;
+                        gameParameters = GameRecord.GameParameters;
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        Logger.WriteLine(ex.Message);
+                        continue;
+                    }
+
+                }
+                break;
+            }
+            int gridSize = gameParameters.ContainsKey("gridSize") ? (int)gameParameters["gridSize"] : 3;
+            rules = GameRulesFactory.CreateGameRules(selectedGameType, gridSize);
+            players = CreatePlayers(selectedGameMode);// Create players based on selected mode
+            int rows = 3;// Initialize board and rules based on selected game
             int cols = 3;
             if (gameParameters.ContainsKey("rows") && gameParameters.ContainsKey("cols"))
             {
                 rows = (int)gameParameters["rows"];
                 cols = (int)gameParameters["cols"];
             }
-
             if (isNewGame)
             {
                 board = new Board(rows, cols);
@@ -151,20 +201,17 @@
             else
             {
                 board = GameRecord.CurrentBoard;
-                turnCounter = GameRecord.MovesLog.Count() + 1;
+                turnCounter = GameRecord.MovesLog.Count();
             }
             gameState = new Game(board, rules);
-
-
-
             Logger.WriteLine($"\nGame initialized: {Type} - {Mode}");
             Logger.WriteLine($"Player 1: {players[0].GetType().Name}, Player 2: {players[1].GetType().Name}\n");
+            Logger.Clear();
         }
-
-
         private int SelectStartOption()
         {
-            if (!File.Exists(fileManager.SaveDirectory + fileManager.SaveFileName + ".json"))
+            // Check if saved game folder exists. If not, only allow starting a new game (Option 1).
+            if (!Directory.Exists(fileManager.SaveDirectory))
             {
                 return 1;
             }
@@ -172,12 +219,11 @@
             {
                 Logger.PrintHeader("SELECT AN OPTION");
                 Logger.PrintOption(1, "Start New Game");
-                Logger.PrintOption(2, "Continue Saved Game");
+                Logger.PrintOption(2, "Load Saved Game");
                 int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
                 return selection;
             }
         }
-
         private GameType SelectGameType()
         {
             Logger.PrintHeader("SELECT GAME TYPE");
@@ -233,15 +279,14 @@
                 return new List<Player>
         {
             new Human(1, player1Symbol),
-            new Human(2, player2Symbol) // TODO: Replace with AI player when available
+            new Computer(2, player2Symbol)
         };
             }
             throw new ArgumentException("Unknown game mode.");
         }
-        private Dictionary<string, object> GetAdditionalGameParameters(GameType gameType)
+        private Dictionary<string, int> GetAdditionalGameParameters(GameType gameType)
         {
-            // Collect board size (rows/cols) according to game-specific rules
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            Dictionary<string, int> parameters = new Dictionary<string, int>();// Collect board size (rows/cols) according to game-specific rules
             switch (gameType)
             {
                 case GameType.TicTacToe:
@@ -258,15 +303,17 @@
                     // Fixed 3x3 with 3 boards for Notakto
                     parameters["rows"] = 3;
                     parameters["cols"] = 3;
+                    break;
+                case GameType.Notakto:
+                    parameters["rows"] = 3;
+                    parameters["cols"] = 9;
                     parameters["numberOfBoards"] = 3;
                     break;
-                case GameType.ConnectFour:
-                    // Standard Connect Four board is 6 rows x 7 columns
+                case GameType.ConnectFour:// Standard Connect Four board is 6 rows x 7 columns
                     parameters["rows"] = 6;
                     parameters["cols"] = 7;
                     break;
-                case GameType.Gomoku:
-                    // Standard Gomoku board is 15x15
+                case GameType.Gomoku:// Standard Gomoku board is 15x15
                     parameters["rows"] = 15;
                     parameters["cols"] = 15;
                     break;

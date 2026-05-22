@@ -3,33 +3,42 @@ namespace OOP_BoardGames_Framework
     public class GameRecord
     {
         public GameType GameType { get; set; }
-        public Board CurrentBoard { get; set; } = null!;
         public GameMode GameMode { get; set; }
-        public Stack<PlayerMove> movesLog { get; set; } = new Stack<PlayerMove>();
-        public Stack<PlayerMove> redoMoves { get; set; } = new Stack<PlayerMove>();
+        public Board CurrentBoard { get; set; } = null!;
+        // public int TotalRows { get; set; }
+        // public int TotalColumns { get; set; }
+        public Dictionary<string, int> GameParameters { get; set; } = new();
+        public Stack<PlayerMove> MovesLog { get; set; } = new();
+        public Stack<PlayerMove> RedoMoves { get; set; } = new();
         public GameRecord() { }
-        public void UpdateGameState(Board board, GameType gameType, GameMode gameMode)
+        public void UpdateGameState(Board board, GameType gameType, GameMode gameMode, Dictionary<string, int> gameParameters)
         {
             this.CurrentBoard = board;
             this.GameType = gameType;
             this.GameMode = gameMode;
+            // this.TotalRows = board.GetRowCount();
+            // this.TotalColumns = board.GetColumnCount();
+            this.GameParameters = gameParameters;
         }
         public void LogMove(PlayerMove move)
         {
             MovesLog.Push(move);
             RedoMoves.Clear();
         }
-        public PlayerMove UndoMove()
+        public void UndoMove()
         {
+            if (MovesLog.Count == 0)
+            {
+                Logger.WriteLine("There are no moves to undo.");
+                return;
+            }
             PlayerMove removedMove = MovesLog.Pop();
             RedoMoves.Push(removedMove);
-            return MovesLog.Peek();
         }
-        public PlayerMove RedoMove()
+        public void RedoMove()
         {
             PlayerMove redoMove = RedoMoves.Pop();
             MovesLog.Push(redoMove);
-            return MovesLog.Peek();
         }
     }
 }
