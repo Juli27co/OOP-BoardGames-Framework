@@ -27,6 +27,7 @@
         public void Run()
         {
             Initialize();
+            GameRecord.UpdateGameState(board!, Type, Mode, gameParameters);
             bool gameEnded = false;
             while (!gameEnded)
             {
@@ -36,6 +37,7 @@
                 Logger.PrintTurnHeader(Type, Mode, turnCounter + 1, currentPlayer);// Display turn information header
                 DisplayCurrentBoard();// Display the current board
                 string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);// Request player action
+                bool isValidate = true;
                 if (string.IsNullOrWhiteSpace(action))
                 {
                     Logger.WriteLine("No valid move found.");
@@ -65,7 +67,8 @@
                     {
                         if (GameRecord.MovesLog.Count() == 0)
                         {
-                            Logger.WriteLine("There are no previous turns available. Please try again.");
+                            Logger.WriteLine("There are no previous turns available. Press Enter to try again.");
+                            Console.ReadLine();
                             continue;
                         }
                         GameRecord.UndoMove();
@@ -74,7 +77,8 @@
                     {
                         if (GameRecord.RedoMoves.Count() == 0)
                         {
-                            Logger.WriteLine("There are no turns available to redo. Please try again.");
+                            Logger.WriteLine("There are no turns available to redo. Press Enter to try again.");
+                            Console.ReadLine();
                             continue;
                         }
                         GameRecord.RedoMove();
@@ -82,7 +86,13 @@
                     board!.Clear();
                     foreach (PlayerMove restoreMove in GameRecord.MovesLog.Reverse())
                     {
-                        gameState!.ExecutePlayerAction(restoreMove);
+                        isValidate = gameState!.ExecutePlayerAction(restoreMove);
+                        if (!isValidate)
+                        {
+                            Logger.WriteLine("Invalid move. Press Enter to try again.");
+                            Console.ReadLine();
+                            continue;
+                        }
                     }
                     turnCounter = GameRecord.MovesLog.Count();
                     continue;
@@ -95,8 +105,15 @@
                     continue;
                 }
                 PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);// Put disc in board
-                gameState!.ExecutePlayerAction(move);
+                isValidate = gameState!.ExecutePlayerAction(move);
+                if (!isValidate)
+                {
+                    Logger.WriteLine("Invalid move. Press Enter to try again.");
+                    Console.ReadLine();
+                    continue;
+                }
                 GameRecord.LogMove(move);
+
                 if (rules!.CheckForWinning(board!))
                 {
                     DisplayCurrentBoard();
@@ -119,6 +136,7 @@
                 }
             }
         }
+
         private void DisplayCurrentBoard()
         {
             BoardDisplay boardDisplay = new BoardDisplay();
@@ -212,7 +230,7 @@
         private int SelectStartOption()
         {
             // Check if saved game folder exists. If not, only allow starting a new game (Option 1).
-            if (!Directory.Exists(fileManager.SaveDirectory))
+            if (!Directory.Exists(fileManager.SaveDirectory) || Directory.GetFiles(fileManager.SaveDirectory, fileManager.SaveFileName + "*").Length == 0)
             {
                 return 1;
             }

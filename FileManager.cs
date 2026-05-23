@@ -5,12 +5,12 @@ namespace OOP_BoardGames_Framework
     public class FileManager
     {
         public string SaveDirectory { get; } = "savedFile/";
-        private string saveFileName = "savedGameFile";
+        public string SaveFileName { get; } = "savedGameFile";
 
         private string GetFilePath(int fileFormat)
         {
             string extension = fileFormat == 1 ? ".txt" : ".json";
-            return SaveDirectory + saveFileName + extension;
+            return SaveDirectory + SaveFileName + extension;
         }
 
         // Saves the game record using the selected file format. ( [fileFormat] 1:txt / 2:json )
@@ -23,7 +23,6 @@ namespace OOP_BoardGames_Framework
                 StringBuilder savedData = new();
                 savedData = SaveTxt(game, savedData);
                 contents = savedData.ToString();
-                Console.WriteLine(savedData); //TEST DELETE LATER ++++++++++++
             }
             else
             {
@@ -38,7 +37,7 @@ namespace OOP_BoardGames_Framework
 
                 string jsonString = JsonSerializer.Serialize(savedData);
                 contents = jsonString;
-                File.WriteAllText(GetFilePath(fileFormat), contents);//TEST DELETE LATER ++++++++++++
+
             }
             // Make a folder empty to avoid save 2 types of files.
             if (Directory.Exists(SaveDirectory))
@@ -109,9 +108,9 @@ namespace OOP_BoardGames_Framework
             foreach (PlayerMove move in game.MovesLog.Reverse())
             {
                 savedData.AppendLine(
-                    $"Turn:{move.Turn}," +
-                    $"PlayerId:{move.Player.PlayerId}," +
-                    $"Piece:{move.Player.GamePiece}," +
+                    $"Turn:{move.Turn};" +
+                    $"PlayerId:{move.Player.PlayerId};" +
+                    $"Piece:{move.Player.GamePiece};" +
                     $"Move:{move.Move}");
             }
 
@@ -172,7 +171,7 @@ namespace OOP_BoardGames_Framework
                 // Rebuild each move from the saved file.
                 if (line.StartsWith("Turn:"))
                 {
-                    string[] elements = line.Split(',');
+                    string[] elements = line.Split(';');
                     int turn = int.Parse(elements[0].Split(':')[1]);
                     int playerId = int.Parse(elements[1].Split(':')[1]);
                     string piece = elements[2].Split(':')[1];

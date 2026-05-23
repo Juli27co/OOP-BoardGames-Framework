@@ -16,8 +16,6 @@ namespace OOP_BoardGames_Framework
             this.CurrentBoard = board;
             this.GameType = gameType;
             this.GameMode = gameMode;
-            // this.TotalRows = board.GetRowCount();
-            // this.TotalColumns = board.GetColumnCount();
             this.GameParameters = gameParameters;
         }
         public void LogMove(PlayerMove move)
@@ -27,18 +25,22 @@ namespace OOP_BoardGames_Framework
         }
         public void UndoMove()
         {
-            if (MovesLog.Count == 0)
+            int undoCount = GameMode == GameMode.HumanVsAI ? 2 : 1;
+            for (int i = 0; i < undoCount; i++)
             {
-                Logger.WriteLine("There are no moves to undo.");
-                return;
+                PlayerMove removedMove = MovesLog.Pop();
+                RedoMoves.Push(removedMove);
             }
-            PlayerMove removedMove = MovesLog.Pop();
-            RedoMoves.Push(removedMove);
+
         }
         public void RedoMove()
         {
-            PlayerMove redoMove = RedoMoves.Pop();
-            MovesLog.Push(redoMove);
+            int redoCount = GameMode == GameMode.HumanVsAI ? 2 : 1;
+            for (int i = 0; i < redoCount; i++)
+            {
+                PlayerMove redoMove = RedoMoves.Pop();
+                MovesLog.Push(redoMove);
+            }
         }
     }
 }
