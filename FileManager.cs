@@ -23,7 +23,6 @@ namespace OOP_BoardGames_Framework
                 StringBuilder savedData = new();
                 savedData = SaveTxt(game, savedData);
                 contents = savedData.ToString();
-
             }
             else
             {
@@ -109,9 +108,9 @@ namespace OOP_BoardGames_Framework
             foreach (PlayerMove move in game.MovesLog.Reverse())
             {
                 savedData.AppendLine(
-                    $"Turn:{move.Turn}," +
-                    $"PlayerId:{move.Player.PlayerId}," +
-                    $"Piece:{move.Player.GamePiece}," +
+                    $"Turn:{move.Turn};" +
+                    $"PlayerId:{move.Player.PlayerId};" +
+                    $"Piece:{move.Player.GamePiece};" +
                     $"Move:{move.Move}");
             }
 
@@ -172,7 +171,7 @@ namespace OOP_BoardGames_Framework
                 // Rebuild each move from the saved file.
                 if (line.StartsWith("Turn:"))
                 {
-                    string[] elements = line.Split(',');
+                    string[] elements = line.Split(';');
                     int turn = int.Parse(elements[0].Split(':')[1]);
                     int playerId = int.Parse(elements[1].Split(':')[1]);
                     string piece = elements[2].Split(':')[1];

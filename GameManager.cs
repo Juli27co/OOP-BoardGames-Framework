@@ -37,6 +37,7 @@
                 Logger.PrintTurnHeader(Type, Mode, turnCounter + 1, currentPlayer);// Display turn information header
                 DisplayCurrentBoard();// Display the current board
                 string action = currentPlayer.RequestAction(board!, rules!, turnCounter + 1);// Request player action
+                bool isValidate = true;
                 if (string.IsNullOrWhiteSpace(action))
                 {
                     Logger.WriteLine("No valid move found.");
@@ -85,7 +86,13 @@
                     board!.Clear();
                     foreach (PlayerMove restoreMove in GameRecord.MovesLog.Reverse())
                     {
-                        gameState!.ExecutePlayerAction(restoreMove);
+                        isValidate = gameState!.ExecutePlayerAction(restoreMove);
+                        if (!isValidate)
+                        {
+                            Logger.WriteLine("Invalid move. Press Enter to try again.");
+                            Console.ReadLine();
+                            continue;
+                        }
                     }
                     turnCounter = GameRecord.MovesLog.Count();
                     continue;
@@ -98,8 +105,15 @@
                     continue;
                 }
                 PlayerMove move = new PlayerMove(action, currentPlayer, turnCounter + 1);// Put disc in board
-                gameState!.ExecutePlayerAction(move);
+                isValidate = gameState!.ExecutePlayerAction(move);
+                if (!isValidate)
+                {
+                    Logger.WriteLine("Invalid move. Press Enter to try again.");
+                    Console.ReadLine();
+                    continue;
+                }
                 GameRecord.LogMove(move);
+
                 if (rules!.CheckForWinning(board!))
                 {
                     DisplayCurrentBoard();
@@ -122,6 +136,7 @@
                 }
             }
         }
+
         private void DisplayCurrentBoard()
         {
             BoardDisplay boardDisplay = new BoardDisplay();
@@ -215,7 +230,7 @@
         private int SelectStartOption()
         {
             // Check if saved game folder exists. If not, only allow starting a new game (Option 1).
-            if (!Directory.Exists(fileManager.SaveDirectory))
+            if (!Directory.Exists(fileManager.SaveDirectory) || Directory.GetFiles(fileManager.SaveDirectory).Length == 0)
             {
                 return 1;
             }
