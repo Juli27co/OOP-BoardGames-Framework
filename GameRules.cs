@@ -17,12 +17,18 @@ namespace OOP_BoardGames_Framework
             ExecuteMove(board, move, move.Player.GamePiece);
             return true;
         }
-        public virtual void UndoMove(Board board, PlayerMove move) // remove the test move and go back
+        public virtual void UndoMove(Board board, PlayerMove move) // ai remove the test move and go back
         {
         }
         public virtual List<PlayerMove> GetValidMoves(Board board, Player player) // find all moves the player can play for AI testing
         {
             return new List<PlayerMove>();
+        }
+        protected void RemovePiece(Board board, int column, int row, string piece) // helper method for removing one move from the board
+        {
+            List<int[]> spots = new List<int[]>();
+            spots.Add(new int[] { column, row });
+            board.RemoveElements(spots, piece);
         }
         protected bool IsInsideBoard(int column, int row)
         {

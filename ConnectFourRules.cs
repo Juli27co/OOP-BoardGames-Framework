@@ -60,9 +60,7 @@ namespace OOP_BoardGames_Framework
             {
                 if (!board.IsCellEmpty(column, row))
                 {
-                    List<int[]> spots = new List<int[]>();
-                    spots.Add(new int[] { column, row });
-                    board.RemoveElements(spots, move.Player.GamePiece);
+                    RemovePiece(board, column, row, move.Player.GamePiece);
                     return;
                 }
             }
