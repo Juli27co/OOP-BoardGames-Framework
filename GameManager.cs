@@ -180,26 +180,30 @@
                 }
                 else
                 {
-                    Logger.PrintHeader("SELECT LOAD FORMAT");
-                    Logger.PrintOption(1, "Load from txt file");
-                    Logger.PrintOption(2, "Load from json file");
-                    int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
-                    FileManager fileManager = new FileManager();
-                    try
+                    while (true)
                     {
-                        GameRecord = fileManager.LoadGame(selection);// Restore game type & game mode
-                        Type = GameRecord.GameType;
-                        selectedGameType = GameRecord.GameType;
-                        Mode = GameRecord.GameMode;
-                        selectedGameMode = GameRecord.GameMode;
-                        gameParameters = GameRecord.GameParameters;
-                    }
-                    catch (FileNotFoundException ex)
-                    {
-                        Logger.WriteLine(ex.Message);
-                        continue;
-                    }
+                        Logger.PrintHeader("SELECT LOAD FORMAT");
+                        Logger.PrintOption(1, "Load from txt file");
+                        Logger.PrintOption(2, "Load from json file");
+                        int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
+                        FileManager fileManager = new FileManager();
+                        try
 
+                        {
+                            GameRecord = fileManager.LoadGame(selection);// Restore game type & game mode
+                            Type = GameRecord.GameType;
+                            selectedGameType = GameRecord.GameType;
+                            Mode = GameRecord.GameMode;
+                            selectedGameMode = GameRecord.GameMode;
+                            gameParameters = GameRecord.GameParameters;
+                            break;
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            Logger.WriteLine(ex.Message);
+                            Logger.WriteLine("Please choose another save format.");
+                        }
+                    }
                 }
                 break;
             }
