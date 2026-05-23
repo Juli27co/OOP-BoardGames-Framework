@@ -67,8 +67,8 @@
                     {
                         if (GameRecord.MovesLog.Count() == 0)
                         {
-                            Logger.WriteLine("There are no previous turns available. Press Enter to try again.");
-                            Console.ReadLine();
+                            Logger.WriteLine("There are no previous turns available. Press any key to try again.");
+                            Console.ReadKey();
                             continue;
                         }
                         GameRecord.UndoMove();
@@ -77,8 +77,8 @@
                     {
                         if (GameRecord.RedoMoves.Count() == 0)
                         {
-                            Logger.WriteLine("There are no turns available to redo. Press Enter to try again.");
-                            Console.ReadLine();
+                            Logger.WriteLine("There are no turns available to redo. Press any key to try again.");
+                            Console.ReadKey();
                             continue;
                         }
                         GameRecord.RedoMove();
@@ -89,8 +89,8 @@
                         isValidate = gameState!.ExecutePlayerAction(restoreMove);
                         if (!isValidate)
                         {
-                            Logger.WriteLine("Invalid move. Press Enter to try again.");
-                            Console.ReadLine();
+                            Logger.WriteLine("Invalid move. Press any key to try again.");
+                            Console.ReadKey();
                             continue;
                         }
                     }
@@ -108,8 +108,8 @@
                 isValidate = gameState!.ExecutePlayerAction(move);
                 if (!isValidate)
                 {
-                    Logger.WriteLine("Invalid move. Press Enter to try again.");
-                    Console.ReadLine();
+                    Logger.WriteLine("Invalid move. Press any key to try again.");
+                    Console.ReadKey();
                     continue;
                 }
                 GameRecord.LogMove(move);
