@@ -12,8 +12,11 @@
             if (rules is NumericalTicTacToeRules)
             {
                 string numberType = this.PlayerId == 1 ? "odd" : "even";
-                Logger.WriteLine($"Player #{this.PlayerId}: Enter position,number. Example: 5,3");
-                Logger.WriteLine($"Player #{this.PlayerId} must use an unused {numberType} number.");
+                int WinLength = rules.WinLength;
+                int winSum = WinLength * ((WinLength * WinLength) + 1) / 2;
+                Logger.WriteLine($">> Enter position,number. Example: 5,3");
+                Logger.WriteLine($">> You must use an unused {numberType.ToUpper()} number.");
+                Logger.WriteLine($">> Aim to form a line with a sum equal to {winSum}.");
             }
             else if (rules is GomokuRules)
             {
