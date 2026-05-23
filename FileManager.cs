@@ -23,7 +23,7 @@ namespace OOP_BoardGames_Framework
                 StringBuilder savedData = new();
                 savedData = SaveTxt(game, savedData);
                 contents = savedData.ToString();
-                Console.WriteLine(savedData); //TEST DELETE LATER ++++++++++++
+
             }
             else
             {
@@ -38,7 +38,7 @@ namespace OOP_BoardGames_Framework
 
                 string jsonString = JsonSerializer.Serialize(savedData);
                 contents = jsonString;
-                File.WriteAllText(GetFilePath(fileFormat), contents);//TEST DELETE LATER ++++++++++++
+
             }
             // Make a folder empty to avoid save 2 types of files.
             if (Directory.Exists(SaveDirectory))
