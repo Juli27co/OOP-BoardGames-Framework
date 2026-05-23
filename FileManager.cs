@@ -5,12 +5,12 @@ namespace OOP_BoardGames_Framework
     public class FileManager
     {
         public string SaveDirectory { get; } = "savedFile/";
-        private string saveFileName = "savedGameFile";
+        public string SaveFileName { get; } = "savedGameFile";
 
         private string GetFilePath(int fileFormat)
         {
             string extension = fileFormat == 1 ? ".txt" : ".json";
-            return SaveDirectory + saveFileName + extension;
+            return SaveDirectory + SaveFileName + extension;
         }
 
         // Saves the game record using the selected file format. ( [fileFormat] 1:txt / 2:json )
