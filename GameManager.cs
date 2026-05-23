@@ -27,6 +27,7 @@
         public void Run()
         {
             Initialize();
+            GameRecord.UpdateGameState(board!, Type, Mode, gameParameters);
             bool gameEnded = false;
             while (!gameEnded)
             {
