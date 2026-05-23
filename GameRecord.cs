@@ -25,12 +25,6 @@ namespace OOP_BoardGames_Framework
         }
         public void UndoMove()
         {
-            if (MovesLog.Count == 0)
-            {
-                Logger.WriteLine("There are no moves to undo.");
-                return;
-            }
-
             int undoCount = GameMode == GameMode.HumanVsAI ? 2 : 1;
 
             for (int i = 0; i < undoCount; i++)
