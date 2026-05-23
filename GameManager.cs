@@ -213,7 +213,7 @@
         private int SelectStartOption()
         {
             // Check if saved game folder exists. If not, only allow starting a new game (Option 1).
-            if (!Directory.Exists(fileManager.SaveDirectory))
+            if (!Directory.Exists(fileManager.SaveDirectory) || Directory.GetFiles(fileManager.SaveDirectory).Length == 0)
             {
                 return 1;
             }
