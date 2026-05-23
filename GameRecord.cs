@@ -26,7 +26,6 @@ namespace OOP_BoardGames_Framework
         public void UndoMove()
         {
             int undoCount = GameMode == GameMode.HumanVsAI ? 2 : 1;
-
             for (int i = 0; i < undoCount; i++)
             {
                 PlayerMove removedMove = MovesLog.Pop();
