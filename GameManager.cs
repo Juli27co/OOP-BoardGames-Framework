@@ -124,7 +124,7 @@
             BoardDisplay boardDisplay = new BoardDisplay();
             if (Type == GameType.ConnectFour)
             {
-                boardDisplay.ShowConnectFourBoard(board!);
+                boardDisplay.ShowConnectFourBoard(board!, rules as ConnectFourRules);
             }
             else if (Type == GameType.Gomoku)
             {
