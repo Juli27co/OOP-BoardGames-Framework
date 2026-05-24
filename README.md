@@ -80,37 +80,69 @@ Then follow the instructions to enter moves.
 
 Data ID Input type Game / area Example input Valid or invalid
 TD01 Menu input General menu 1 Valid
+
 TD02 Menu input General menu 2 Valid
+
 TD03 Command input During a turn save Valid
+
 TD04 Command input During a turn undo Valid
+
 TD05 Command input During a turn redo Valid
+
 TD06 Command input During a turn help Valid
+
 TD07 TicTacToe move TicTacToe 1 Valid
+
 TD08 TicTacToe move TicTacToe 5 Valid
+
 TD09 TicTacToe move TicTacToe 9 Valid
+
 TD10 TicTacToe move TicTacToe 0 Invalid
+
 TD11 TicTacToe move TicTacToe 10 Invalid
+
 TD12 Connect Four move Connect Four 1 Valid
+
 TD13 Connect Four move Connect Four 4 Valid
+
 TD14 Connect Four move Connect Four 7 Valid
+
 TD15 Connect Four move Connect Four 8 Invalid
+
 TD16 Connect Four move Connect Four A Invalid
+
 TD17 Gomoku move Gomoku A1 Valid
+
 TD18 Gomoku move Gomoku J8 Valid
+
 TD19 Gomoku move Gomoku O15 Valid
+
 TD20 Gomoku move Gomoku P16 Invalid
+
 TD21 Numerical TicTacToe move Numerical TicTacToe 5,3 Valid
+
 TD22 Numerical TicTacToe move Numerical TicTacToe 4,2 Valid/Invalid by player
+
 TD23 Numerical TicTacToe move Numerical TicTacToe 1,1 Valid
+
 TD24 Numerical TicTacToe move Numerical TicTacToe 20,3 Invalid
+
 TD25 Notakto move Notakto 1,5 Valid
+
 TD26 Notakto move Notakto 2,3 Valid
+
 TD27 Notakto move Notakto 3,9 Valid
+
 TD28 Notakto move Notakto 4,1 Invalid
+
 TD29 Notakto move Notakto 1,10 Invalid
+
 TD30 Unexpected text Any game abc Invalid
+
 TD31 Unexpected symbol Any game @ Invalid
+
 TD32 Blank input Any game Invalid
+
 TD33 Repeated move Any game same cell twice Invalid
 
 ---
