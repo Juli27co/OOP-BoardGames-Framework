@@ -2,7 +2,7 @@
 
 Welcome to the **OOP Board Games**, a modular and extensible console-based implementation of five two-player board games- developed by Team for **IFN 584: Object-Oriented Programming** at QUT.
 
-|-----------------------------------------------------------------------------|
+---
 
 ## Project Overview
 
@@ -10,7 +10,7 @@ This framework helps multiple two-player board games in a single unified system.
 
 It was designed with extensibility in mind, applying object-oriented design principles and patterns to allow new games to be added with minimal changes to existing code.
 
-|-----------------------------------------------------------------------------|
+---
 
 ## Features
 
@@ -22,7 +22,7 @@ It was designed with extensibility in mind, applying object-oriented design prin
 
 - Save/load game state (.txt and .json)
 
-|-----------------------------------------------------------------------------|
+---
 
 ## Game Variants Supported
 
@@ -38,7 +38,7 @@ It was designed with extensibility in mind, applying object-oriented design prin
 
 | Connect Four | 6\*7 grid with gravity. First to connect 4 in a row wins|
 
-|-----------------------------------------------------------------------------|
+---
 
 ## How to Run
 
@@ -48,25 +48,23 @@ Requirements
 
 No additional external libraries required
 
-|-----------------------------------------------------------------------------|
-
-# 1. Clone the repository
+1. Clone the repository
 
 git clone https://github.com/Juli27co/OOP-BoardGames-Framework.git
 
-# 2. Navigate to the project folder
+2. Navigate to the project folder
 
 cd OOP-BoardGames-Framework
 
-# 3. Build the project
+3. Build the project
 
 dotnet build
 
-# 4. Run the project
+4. Run the project
 
 dotnet run
 
-|-----------------------------------------------------------------------------|
+---
 
 ## How to play
 
@@ -76,7 +74,7 @@ For a new game, select a game type and game mode - Human vs Human or Human vs Co
 
 Then follow the instructions to enter moves.
 
-|-----------------------------------------------------------------------------|
+---
 
 ## Test Data
 
@@ -114,3 +112,5 @@ TD30 Unexpected text Any game abc Invalid
 TD31 Unexpected symbol Any game @ Invalid
 TD32 Blank input Any game Invalid
 TD33 Repeated move Any game same cell twice Invalid
+
+---
