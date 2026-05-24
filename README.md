@@ -48,21 +48,21 @@ Requirements
 
 No additional external libraries required
 
-1. Clone the repository
+1.  Clone the repository
 
-git clone https://github.com/Juli27co/OOP-BoardGames-Framework.git
+        git clone https://github.com/Juli27co/OOP-BoardGames-Framework.git
 
-2. Navigate to the project folder
+2.  Navigate to the project folder
 
-cd OOP-BoardGames-Framework
+        cd OOP-BoardGames-Framework
 
-3. Build the project
+3.  Build the project
 
-dotnet build
+        dotnet build
 
-4. Run the project
+4.  Run the project
 
-dotnet run
+        dotnet run
 
 ---
 
