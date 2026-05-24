@@ -8,7 +8,9 @@ namespace OOP_BoardGames_Framework
         public override int Rows { get; } = 6;
         public override int WinLength { get; } = 4;
         public override string Player1Symbol { get; } = "X";
+        public ConsoleColor Player1Colour { get; } = ConsoleColor.Red;
         public override string Player2Symbol { get; } = "O";
+        public ConsoleColor Player2Colour { get; } = ConsoleColor.Yellow;
         // Checks for a valid move by checking if user input is:
         // A number
         // In the range
