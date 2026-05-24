@@ -1,4 +1,6 @@
 namespace OOP_BoardGames_Framework
+// Inherits from game rules
+// Abstract as child classes still are the ones to create
 {
     public abstract class LineBasedGameRules : GameRules
     {

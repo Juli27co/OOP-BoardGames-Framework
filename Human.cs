@@ -1,5 +1,6 @@
 ﻿namespace OOP_BoardGames_Framework
 {
+    // Inherits from player
     public class Human : Player
     {
         public Human(int playerId, string gamePiece) : base(playerId, gamePiece)

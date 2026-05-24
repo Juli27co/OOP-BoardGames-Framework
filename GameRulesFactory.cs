@@ -2,6 +2,7 @@ namespace OOP_BoardGames_Framework
 {
     public static class GameRulesFactory
     {
+        // Centeral object creator
         public static GameRules CreateGameRules(GameType gameType, int gridSize = 3)
         {
             switch (gameType)

@@ -1,10 +1,13 @@
 namespace OOP_BoardGames_Framework
 {
+    // No need to create game rules directly 
     public abstract class GameRules
     {
+        // Abstract to force every game to provide this data
         public abstract int Columns { get; }
         public abstract int Rows { get; }
         public abstract int WinLength { get; }
+        // Abstract as individual games MUST override these methods
         public abstract bool ValidatePlayerMove(Board board, PlayerMove move);
         public abstract bool CheckForWinning(Board board);
         public abstract void ExecuteMove(Board board, PlayerMove move, string playerSymbol);
@@ -17,6 +20,7 @@ namespace OOP_BoardGames_Framework
             ExecuteMove(board, move, move.Player.GamePiece);
             return true;
         }
+        // Can override but don't need to
         public virtual void UndoMove(Board board, PlayerMove move) // ai remove the test move and go back
         {
         }
@@ -24,6 +28,7 @@ namespace OOP_BoardGames_Framework
         {
             return new List<PlayerMove>();
         }
+        // Only useable by gamerules and the child classes
         protected void RemovePiece(Board board, int column, int row, string piece) // helper method for removing one move from the board
         {
             List<int[]> spots = new List<int[]>();

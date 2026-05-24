@@ -5,13 +5,9 @@ namespace OOP_BoardGames_Framework
         private const int BoardSize = 3;
         private const int NumberOfBoards = 3;
         private const string Piece = "X";
-        
-
         public override int Columns => BoardSize;
         public override int Rows => BoardSize;
         public override int WinLength => BoardSize;
-
-
         // Checking valid moves
         public override bool ValidatePlayerMove(Board board, PlayerMove move)
         {
@@ -26,7 +22,6 @@ namespace OOP_BoardGames_Framework
             int globalColumn = ToGlobalColumn(boardIndex, column);
             return board.IsCellEmpty(globalColumn, row);
         }
-
         // Place x at the cell of the selected board
         public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
@@ -37,8 +32,6 @@ namespace OOP_BoardGames_Framework
             int globalColumn = ToGlobalColumn(boardIndex, column);
             board.AddElement(globalColumn, row, Piece);
         }
-
-
         public override bool CheckForWinning(Board board)
         {
             for (int b = 0; b < NumberOfBoards; b++)
@@ -50,7 +43,6 @@ namespace OOP_BoardGames_Framework
             }
             return true;
         }
-
         //There are no draws
         public override bool CheckForDraw(Board board)
         {
@@ -66,7 +58,6 @@ namespace OOP_BoardGames_Framework
             }
             return dead;
         }
-
         // Check whether the board has a three-in-a-row of X.
         private bool IsBoardDead(Board board, int boardIndex)
         {
@@ -95,7 +86,6 @@ namespace OOP_BoardGames_Framework
             }
             return false;
         }
-
         // Return ture if all cells have X
         private bool IsLineComplete(Board board, int startCol, int startRow, int dc, int dr)
         {
@@ -108,7 +98,6 @@ namespace OOP_BoardGames_Framework
                 {
                     return false;
                 }
-
                 if (board.GetCell(col, row) != Piece)
                 {
                     return false;
@@ -116,13 +105,10 @@ namespace OOP_BoardGames_Framework
             }
             return true;
         }
-
         private int ToGlobalColumn(int boardIndex, int localColumn)
         {
             return boardIndex * BoardSize + localColumn;
         }
-
-
         //Return all valid moves
         public override List<PlayerMove> GetValidMoves(Board board, Player player)
         {
@@ -140,8 +126,6 @@ namespace OOP_BoardGames_Framework
             }
             return moves;
         }
-
-
         //Remove the previously placed X
         public override void UndoMove(Board board, PlayerMove move)
         {

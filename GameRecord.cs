@@ -29,7 +29,6 @@ namespace OOP_BoardGames_Framework
                 PlayerMove removedMove = MovesLog.Pop();
                 RedoMoves.Push(removedMove);
             }
-
         }
         public void RedoMove()
         {
