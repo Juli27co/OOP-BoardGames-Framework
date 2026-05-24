@@ -79,6 +79,7 @@ Then follow the instructions to enter moves.
 ## Test Data
 
 Data ID Input type Game / area Example input Valid or invalid
+
 TD01 Menu input General menu 1 Valid
 
 TD02 Menu input General menu 2 Valid
