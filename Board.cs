@@ -2,13 +2,20 @@
 {
     public class Board
     {
+        // A list of string arrays for the board 
         private List<string[]> gridMatrix;
+        // Allows other classes to get and set the board matrix 
         public List<string[]> GridMatrix
         {
             get { return gridMatrix; }
             set { gridMatrix = value; }
         }
-        public Board() { gridMatrix = new List<string[]>(); }
+        // Board Constructor 
+        public Board()
+        {
+            gridMatrix = new List<string[]>();
+        }
+        // Constructor that iterates rows and creates " " columns
         public Board(int rows, int columns)
         {
             gridMatrix = new List<string[]>();
@@ -22,11 +29,13 @@
                 gridMatrix.Add(newRow);
             }
         }
-        public int GetRowCount() //get total rows for displaying the board.
+        //get total rows for displaying the board.
+        public int GetRowCount()
         {
             return gridMatrix.Count;
         }
-        public int GetColumnCount() //get total cols for displaying the board.
+        //get total cols for displaying the board.
+        public int GetColumnCount()
         {
             return gridMatrix[0].Length;
         }
@@ -34,6 +43,7 @@
         {
             return gridMatrix[row][column];
         }
+        // Returns empty if " "
         public bool IsCellEmpty(int column, int row)
         {
             if (!IsInsideBoard(column, row))
@@ -42,6 +52,7 @@
             }
             return gridMatrix[row][column] == " ";
         }
+        // Adds the game piece if empty 
         public bool AddElement(int column, int row, string gamePiece)
         {
             if (!IsCellEmpty(column, row))
@@ -51,6 +62,7 @@
             gridMatrix[row][column] = gamePiece;
             return true;
         }
+        // Removes game piece. Only does it if it is the correct one to remove
         public void RemoveElements(List<int[]> positions, string gamePieceToRemove)
         {
             for (int i = 0; i < positions.Count; i++)
@@ -88,7 +100,8 @@
             }
             return true;
         }
-        private bool IsInsideBoard(int column, int row) //to avoid invalid positions
+        //to avoid invalid positions
+        private bool IsInsideBoard(int column, int row)
         {
             return row >= 0 &&
                 row < GetRowCount() &&

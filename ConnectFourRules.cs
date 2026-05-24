@@ -1,14 +1,18 @@
 namespace OOP_BoardGames_Framework
 {
+    // Inhertis from Line based game rules
     public class ConnectFourRules : LineBasedGameRules
     {
+        //Polymorphic 
         public override int Columns { get; } = 7;
         public override int Rows { get; } = 6;
         public override int WinLength { get; } = 4;
         public override string Player1Symbol { get; } = "X";
-        public ConsoleColor Player1Colour { get; } = ConsoleColor.Red;
         public override string Player2Symbol { get; } = "O";
-        public ConsoleColor Player2Colour { get; } = ConsoleColor.Yellow;
+        // Checks for a valid move by checking if user input is:
+        // A number
+        // In the range
+        // If not full (this checks the top row for the column in this case)
         public override bool ValidatePlayerMove(Board board, PlayerMove move)
         {
             if (!TryParseMove(move, out int column))
@@ -37,7 +41,8 @@ namespace OOP_BoardGames_Framework
             }
             throw new InvalidOperationException("Column is full.");
         }
-        public override List<PlayerMove> GetValidMoves(Board board, Player player) // find all moves the player can play for AI testing
+        // find all moves the player can play for AI testing
+        public override List<PlayerMove> GetValidMoves(Board board, Player player)
         {
             List<PlayerMove> moves = new List<PlayerMove>();
             for (int column = 1; column <= Columns; column++)
@@ -50,7 +55,8 @@ namespace OOP_BoardGames_Framework
             }
             return moves;
         }
-        public override void UndoMove(Board board, PlayerMove move) // undo the AI test move
+        // undo the AI test move
+        public override void UndoMove(Board board, PlayerMove move)
         {
             if (!TryParseMove(move, out int column))
             {
@@ -65,6 +71,7 @@ namespace OOP_BoardGames_Framework
                 }
             }
         }
+        // Encapsulation
         private bool TryParseMove(PlayerMove move, out int column)
         {
             column = 0;

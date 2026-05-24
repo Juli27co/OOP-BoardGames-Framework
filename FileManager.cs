@@ -6,13 +6,11 @@ namespace OOP_BoardGames_Framework
     {
         public string SaveDirectory { get; } = "savedFile/";
         public string SaveFileName { get; } = "savedGameFile";
-
         private string GetFilePath(int fileFormat)
         {
             string extension = fileFormat == 1 ? ".txt" : ".json";
             return SaveDirectory + SaveFileName + extension;
         }
-
         // Saves the game record using the selected file format. ( [fileFormat] 1:txt / 2:json )
         public void SaveGame(GameRecord game, int fileFormat)
         {
@@ -34,10 +32,8 @@ namespace OOP_BoardGames_Framework
                     CurrentBoard = game.CurrentBoard,
                     MovesLog = game.MovesLog.Reverse()
                 };
-
                 string jsonString = JsonSerializer.Serialize(savedData);
                 contents = jsonString;
-
             }
             // Make a folder empty to avoid save 2 types of files.
             if (Directory.Exists(SaveDirectory))
@@ -47,11 +43,9 @@ namespace OOP_BoardGames_Framework
                     File.Delete(oldFile);
                 }
             }
-
             Directory.CreateDirectory(SaveDirectory);
             File.WriteAllText(GetFilePath(fileFormat), contents);
         }
-
         // Load the game record using the selected file format. ( [fileFormat] 1:txt / 2:json )
         public GameRecord LoadGame(int fileFormat)
         {
@@ -67,7 +61,6 @@ namespace OOP_BoardGames_Framework
                     throw new FileNotFoundException("Unable to load the game because the save file was not found.");
                 }
             }
-
             GameRecord? loadedData = new GameRecord();
             if (fileFormat == 1)
             {
@@ -80,7 +73,6 @@ namespace OOP_BoardGames_Framework
             }
             return loadedData!;
         }
-
         public StringBuilder SaveTxt(GameRecord game, StringBuilder savedData)
         {
             savedData.AppendLine($"GameType:{game.GameType}");
@@ -91,7 +83,6 @@ namespace OOP_BoardGames_Framework
                 savedData.AppendLine(
                     $"GameParameter[{parameter.Key}]:{parameter.Value}");
             }
-
             //Generate board row data. 
             int rows = game.CurrentBoard.GetRowCount();
             int columns = game.CurrentBoard.GetColumnCount();
@@ -113,13 +104,10 @@ namespace OOP_BoardGames_Framework
                     $"Piece:{move.Player.GamePiece};" +
                     $"Move:{move.Move}");
             }
-
             return savedData;
         }
-
         public GameRecord LoadTxt(string filePath, GameRecord loadedData)
         {
-
             string[] lines = File.ReadAllLines(filePath);
             foreach (string line in lines)
             {
@@ -135,7 +123,6 @@ namespace OOP_BoardGames_Framework
                     loadedData.GameMode = Enum.Parse<GameMode>(gameModeValue);
                     continue;
                 }
-
                 if (line.StartsWith("GameParameter"))
                 {
                     string key = line.Split('[')[1].Split(']')[0];
@@ -156,7 +143,6 @@ namespace OOP_BoardGames_Framework
                     int row = int.Parse(line.Split('[')[1].Split(']')[0]);
                     string rowData = line.Split(':')[1].Trim().Trim('[', ']');
                     string[] cells = rowData.Split(',');
-
                     for (int col = 0; col < cells.Length; col++)
                     {
                         string piece = cells[col].Trim();
@@ -183,7 +169,6 @@ namespace OOP_BoardGames_Framework
             }
             return loadedData;
         }
-
         private string? GetLineValue(string line, string keyword)
         {
             if (line.StartsWith(keyword))

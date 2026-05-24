@@ -1,7 +1,9 @@
 namespace OOP_BoardGames_Framework
 {
+    // Inherit line based game rules
     public class GomokuRules : LineBasedGameRules
     {
+        // Polymorphic behaviour
         public override int Columns { get; } = 15;
         public override int Rows { get; } = 15;
         public override int WinLength { get; } = 5;
@@ -52,6 +54,10 @@ namespace OOP_BoardGames_Framework
                 RemovePiece(board, column, row, move.Player.GamePiece);
             }
         }
+        // Parse a move input:
+        // Fixes up the input with trim and upper
+        // Gets the letter, makes sure it's in range and applies 0 index method
+        // Substring gives the row after the column has been inputted
         private bool TryParseMove(PlayerMove move, out int column, out int row)
         {
             column = 0;

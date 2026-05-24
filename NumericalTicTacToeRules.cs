@@ -137,7 +137,8 @@ namespace OOP_BoardGames_Framework
             {
                 return true;
             }
-            return move.Player.PlayerId == 1 ? number % 2 == 1 : number % 2 == 0; //Does this by checking the remained after dividing 2
+            //Does this by checking the remained after dividing 2
+            return move.Player.PlayerId == 1 ? number % 2 == 1 : number % 2 == 0;
         }
     }
 }

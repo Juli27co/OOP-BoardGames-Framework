@@ -2,7 +2,8 @@
 {
     internal static class Logger
     {
-        public static string ReadLine(string? request = null)// Custom method to read user input.
+        // Custom method to read user input.
+        public static string ReadLine(string? request = null)
         {
             if (request != null)
             {
@@ -11,23 +12,28 @@
             string input = Console.ReadLine() ?? "";
             return input;
         }
-        public static void WriteLine(string? message = null)// Write a line to console
+        // Write a line to console
+        public static void WriteLine(string? message = null)
         {
             Console.WriteLine(message);
         }
-        public static void WriteLine(string format, params object?[] args)// Write a formatted line to console
+        // Write a formatted line to console
+        public static void WriteLine(string format, params object?[] args)
         {
             Console.WriteLine(format, args);
         }
-        public static void Write(string? message)// Write to console without a newline
+        // Write to console without a newline
+        public static void Write(string? message)
         {
             Console.Write(message);
         }
-        public static void Write(string format, params object?[] args)// Write a formatted message without a newline
+        // Write a formatted message without a newline
+        public static void Write(string format, params object?[] args)
         {
             Console.Write(format, args);
         }
-        public static int ReadInt(string? prompt = null, int min = int.MinValue, int max = int.MaxValue)// Read integer input with validation
+        // Read integer input with validation
+        public static int ReadInt(string? prompt = null, int min = int.MinValue, int max = int.MaxValue)
         {
             while (true)
             {
@@ -53,15 +59,18 @@
                 }
             }
         }
-        public static void PrintHeader(string headerText)// Display a section header
+        // Display a section header
+        public static void PrintHeader(string headerText)
         {
             WriteLine($"\n>>>> {headerText} <<<<");
         }
-        public static void PrintOption(int number, string optionText) // Display an option item (typically for menus)
+        // Display an option item (typically for menus)
+        public static void PrintOption(int number, string optionText)
         {
             WriteLine($"{number}. {optionText}");
         }
-        public static void Clear() // Clear the console
+        // Clear the console
+        public static void Clear()
         {
             Console.Clear();
         }
@@ -83,7 +92,6 @@
         "Gomoku: J8 (Column, Row)",
         "Notakto: 1,5 (Board, Position // 1 is top left // 9 is bottom right)"
     };
-
             foreach (string line in lines)
             {
                 WriteLine(line);

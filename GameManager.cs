@@ -136,7 +136,6 @@
                 }
             }
         }
-
         private void DisplayCurrentBoard()
         {
             BoardDisplay boardDisplay = new BoardDisplay();
@@ -166,7 +165,6 @@
             GameType selectedGameType;
             GameMode selectedGameMode;
             bool isNewGame;
-
             while (true) // Return to the menu if loading fails.
             {
                 isNewGame = SelectStartOption() == 1;// Select new game or load game
@@ -188,7 +186,6 @@
                         int selection = Logger.ReadInt($"Enter your choice (1-2): ", 1, 2);
                         FileManager fileManager = new FileManager();
                         try
-
                         {
                             GameRecord = fileManager.LoadGame(selection);// Restore game type & game mode
                             Type = GameRecord.GameType;

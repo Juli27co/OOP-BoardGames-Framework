@@ -23,7 +23,8 @@
         {
             PrintGomokuBoard(board);
         }
-        private void PrintGridBoard(Board board, bool showPositionNumbers) //for games using a basic grid layout
+        //for games using a basic grid layout
+        private void PrintGridBoard(Board board, bool showPositionNumbers)
         {
             int cellWidth;
             if (showPositionNumbers)
@@ -34,18 +35,15 @@
             {
                 cellWidth = 3;
             }
-
             for (int row = 0; row < board.GetRowCount(); row++)
             {
                 for (int column = 0; column < board.GetColumnCount(); column++)
                 {
                     string cell = board.GetCell(column, row);
-
                     if (showPositionNumbers && string.IsNullOrWhiteSpace(cell))
                     {
                         int position = (row * board.GetColumnCount()) + column + 1;
                         cell = "(" + position + ")";
-
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.Write(cell.PadLeft(cellWidth));
                         Console.ResetColor();
@@ -55,23 +53,19 @@
                         cell = " " + cell + " ";
                         Console.Write(cell.PadLeft(cellWidth));
                     }
-
                     if (column < board.GetColumnCount() - 1)
                     {
                         Console.Write("|");
                     }
                 }
-
                 Console.WriteLine();
-
                 if (row < board.GetRowCount() - 1)
                 {
                     PrintRowLine(board.GetColumnCount(), cellWidth);
                 }
             }
         }
-
-        public void PrintNotaktoBoard(Board board)
+        private void PrintNotaktoBoard(Board board)
         {
             int boardSize = 3;
             for (int b = 0; b < 3; b++)
@@ -79,7 +73,6 @@
                 Console.Write($"   Board {b + 1}         ");
             }
             Console.WriteLine();
-
             for (int row = 0; row < boardSize; row++)
             {
                 for (int b = 0; b < 3; b++)
@@ -88,12 +81,10 @@
                     for (int col = 0; col < boardSize; col++)
                     {
                         string cell = board.GetCell(colOffset + col, row);
-
                         if (string.IsNullOrWhiteSpace(cell))
                         {
                             cell = " ";
                         }
-
                         Console.Write(" " + cell + " ");
                         if (col < boardSize - 1)
                         {
@@ -103,7 +94,6 @@
                     Console.Write("         ");
                 }
                 Console.WriteLine();
-
                 if (row < boardSize - 1)
                 {
                     for (int b = 0; b < 3; b++)
@@ -116,7 +106,6 @@
             }
             Console.WriteLine();
         }
-
         private void PrintConnectFourBoard(Board board)
         {
             for (int row = 0; row < board.GetRowCount(); row++)
@@ -186,24 +175,6 @@
                 if (column < columns - 1)
                 {
                     Console.Write("+");
-                }
-            }
-            Console.WriteLine();
-        }
-        private void PrintNotaktoRowLine(int columns)
-        {
-            for (int column = 0; column < columns; column++)
-            {
-                Console.Write("---");
-                bool isEndOfSmallBoard = (column + 1) % 3 == 0;
-                bool isLastColumn = column == columns - 1;
-                if (!isEndOfSmallBoard && !isLastColumn)
-                {
-                    Console.Write("+");
-                }
-                else if (isEndOfSmallBoard && !isLastColumn)
-                {
-                    Console.Write("     ");
                 }
             }
             Console.WriteLine();

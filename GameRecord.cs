@@ -5,8 +5,6 @@ namespace OOP_BoardGames_Framework
         public GameType GameType { get; set; }
         public GameMode GameMode { get; set; }
         public Board CurrentBoard { get; set; } = null!;
-        // public int TotalRows { get; set; }
-        // public int TotalColumns { get; set; }
         public Dictionary<string, int> GameParameters { get; set; } = new();
         public Stack<PlayerMove> MovesLog { get; set; } = new();
         public Stack<PlayerMove> RedoMoves { get; set; } = new();
@@ -31,7 +29,6 @@ namespace OOP_BoardGames_Framework
                 PlayerMove removedMove = MovesLog.Pop();
                 RedoMoves.Push(removedMove);
             }
-
         }
         public void RedoMove()
         {
