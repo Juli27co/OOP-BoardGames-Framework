@@ -21,6 +21,13 @@ namespace OOP_BoardGames_Framework
             }
             return board.IsCellEmpty(column, 0);
         }
+
+        public ConsoleColor GetColorForSymbol(string symbol)
+        {
+            if (symbol == Player1Symbol) return Player1Colour;
+            if (symbol == Player2Symbol) return Player2Colour;
+            return Console.ForegroundColor;
+        }
         public override void ExecuteMove(Board board, PlayerMove move, string playerSymbol)
         {
             if (!TryParseMove(move, out int column))

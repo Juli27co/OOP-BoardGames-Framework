@@ -14,10 +14,10 @@
         {
             PrintNotaktoBoard(board);
         }
-        public void ShowConnectFourBoard(Board board)
+        public void ShowConnectFourBoard(Board board, ConnectFourRules? rules = null)
         {
             PrintColumnHeader(board.GetColumnCount());
-            PrintConnectFourBoard(board);
+            PrintConnectFourBoard(board, rules);
         }
         public void ShowGomokuBoard(Board board)
         {
@@ -117,31 +117,30 @@
             Console.WriteLine();
         }
 
-        private void PrintConnectFourBoard(Board board)
+        private void PrintConnectFourBoard(Board board, ConnectFourRules? rules)
         {
             for (int row = 0; row < board.GetRowCount(); row++)
             {
                 for (int column = 0; column < board.GetColumnCount(); column++)
                 {
-                    Console.Write("| ");
                     string cell = board.GetCell(column, row);
-                    if (cell == "X")
+                    Console.Write("| ");
+
+                    if (rules != null && !string.IsNullOrWhiteSpace(cell))
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        ConsoleColor colour = rules.GetColorForSymbol(cell);
+                        ConsoleColor original = Console.ForegroundColor;
+                        Console.ForegroundColor = colour;
                         Console.Write(cell);
-                        Console.ResetColor();
+                        Console.ForegroundColor = original;
                     }
-                    else if (cell == "O")
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write(cell);
-                        Console.ResetColor();
-                    }
-                    else
+                    else 
                     {
                         Console.Write(cell);
                     }
+
                     Console.Write(" ");
+
                 }
                 Console.WriteLine("|");
             }
